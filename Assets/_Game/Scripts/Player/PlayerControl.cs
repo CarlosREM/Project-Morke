@@ -16,6 +16,8 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float moveSpeed;
     [SerializeField, Range(0, 1)] private float moveSpeedCrouchMultiplier;
     [SerializeField] private float jumpForce;
+    [SerializeField] private float airMaxVelocity;
+    [SerializeField] private float airMinVelocity;
     
     public bool IsJumping { get; private set; }
     public bool IsCrouching { get; private set; }
@@ -24,7 +26,7 @@ public class PlayerControl : MonoBehaviour
     [Header("Ground check")]
     [SerializeField] private LayerMask groundCheckLayer;
     [SerializeField, Tooltip("Changing Z does nothing")] private Bounds groundCheckBounds;
-    private bool _isGrounded;
+    public bool IsGrounded { get; private set; }
 
     [Header("Additional Components")]
     [SerializeField] private Collider2D normalCollider;
@@ -32,7 +34,10 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private Transform flashlightPivot;
     [SerializeField] private GameObject flashlightObject;
     [SerializeField] private Collider2D interactionCollider;
+    public float VelocityY { get; private set; }
 
+    public bool IsFacingRight { get; private set; } = true;
+    
     #region Initialization
     
     void Awake()
@@ -51,8 +56,6 @@ public class PlayerControl : MonoBehaviour
         _input.AddInputEventDelegate(InputCrouch, UpdateLoopType.Update, InputActionEventType.Update, "GP_Crouch");
         _input.AddInputEventDelegate(InputJump, UpdateLoopType.Update, InputActionEventType.Update, "GP_Jump");
         _input.AddInputEventDelegate(InputFlashlight, UpdateLoopType.Update, InputActionEventType.Update, "GP_Flashlight");
-        _input.AddInputEventDelegate(InputFlashlightMove, UpdateLoopType.Update, InputActionEventType.Update, "GP_FlashlightX");
-        _input.AddInputEventDelegate(InputFlashlightMove, UpdateLoopType.Update, InputActionEventType.Update, "GP_FlashlightY");
         _input.AddInputEventDelegate(InputInteract, UpdateLoopType.Update, InputActionEventType.ButtonJustPressed, "GP_Interact");
 
         _health.OnDeath += OnDeath;
@@ -69,8 +72,6 @@ public class PlayerControl : MonoBehaviour
         _input.RemoveInputEventDelegate(InputCrouch, UpdateLoopType.Update, InputActionEventType.Update, "GP_Crouch");
         _input.RemoveInputEventDelegate(InputJump, UpdateLoopType.Update, InputActionEventType.Update, "GP_Jump");
         _input.RemoveInputEventDelegate(InputFlashlight, UpdateLoopType.Update, InputActionEventType.Update, "GP_Flashlight");
-        _input.RemoveInputEventDelegate(InputFlashlightMove, UpdateLoopType.Update, InputActionEventType.Update, "GP_FlashlightX");
-        _input.RemoveInputEventDelegate(InputFlashlightMove, UpdateLoopType.Update, InputActionEventType.Update, "GP_FlashlightY");
         _input.RemoveInputEventDelegate(InputInteract, UpdateLoopType.Update, InputActionEventType.ButtonJustPressed, "GP_Interact");
         
         _health.OnDeath -= OnDeath;
@@ -92,13 +93,26 @@ public class PlayerControl : MonoBehaviour
         // ground check
         Vector2 groundCheckOrigin = transform.position + groundCheckBounds.center;
 
-        Gizmos.color = (_isGrounded) ? Color.cyan : Color.red;
+        Gizmos.color = (IsGrounded) ? Color.cyan : Color.red;
         Gizmos.DrawWireCube(groundCheckOrigin, groundCheckBounds.size);
     }
 
+    private void Update()
+    {
+        InputFlashlightMove();
+    }
+    
     private void FixedUpdate()
     {
-        _isGrounded = GroundCheck();
+        IsGrounded = GroundCheck();
+
+        if (!IsGrounded && IsCrouching)
+        {
+            IsCrouching = false;
+        }
+
+        VelocityY = Mathf.Clamp(_rb.linearVelocityY, airMinVelocity, airMaxVelocity);
+        _rb.linearVelocityY = VelocityY;
     }
 
     private bool GroundCheck()
@@ -116,6 +130,7 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private bool crouchInputToggle;
     [SerializeField] private bool flashlightInputToggle;
 
+    public float MoveInput { get; private set; }
 
     private void InputMove(InputActionEventData inputData)
     {
@@ -123,6 +138,12 @@ public class PlayerControl : MonoBehaviour
 
         float crouchMultiplier = (IsCrouching) ? moveSpeedCrouchMultiplier : 1; 
         _rb.linearVelocityX = value * moveSpeed * crouchMultiplier;
+        MoveInput = value;
+
+        if (value != 0)
+        {
+            IsFacingRight = value > 0;
+        }
     }
     
     private void InputCrouch(InputActionEventData inputData)
@@ -154,7 +175,7 @@ public class PlayerControl : MonoBehaviour
     {
         bool isPressed = inputData.GetButton();
 
-        if (inputData.GetButtonDown())
+        if (inputData.GetButtonDown() && !IsCrouching)
         {
             _jumpInputCacheCurrent = jumpInputCacheDuration;
         }
@@ -163,7 +184,7 @@ public class PlayerControl : MonoBehaviour
             _jumpInputCacheCurrent -= Time.deltaTime;
         }
 
-        if (_isGrounded && _jumpInputCacheCurrent > 0)
+        if (IsGrounded && _jumpInputCacheCurrent > 0)
         {
             _rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             IsJumping = true;
@@ -174,7 +195,6 @@ public class PlayerControl : MonoBehaviour
         {
             _rb.linearVelocityY = 0;
         }
-
         if (IsJumping && _rb.linearVelocityY <= 0)
         {
             IsJumping = false;
@@ -202,32 +222,39 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    private void InputFlashlightMove(InputActionEventData inputData)
+    private void InputFlashlightMove()
     {
+        Vector3 vectorTowardsMouse, cursorWorldPoint;
 
-        bool IsMouse = inputData.IsCurrentInputSource(ControllerType.Mouse);
-
-        if (IsMouse)
+        if (_input.controllers.GetLastActiveController() == null)
+            return;
+        
+        if (_input.controllers.GetLastActiveController().type == ControllerType.Joystick)
         {
-            // if mouse, get mouse world position and aim flashlight towards it
-            var mouseWorldPoint = Camera.main.ScreenToWorldPoint(ReInput.controllers.Mouse.screenPosition);
+            // joystick input
+            float valueX = _input.GetAxis("GP_FlashlightX"),
+                  valueY = _input.GetAxis("GP_FlashlightY");
 
-            Vector3 vectorTowardsMouse = mouseWorldPoint - transform.position;
-
-            // clamps vector Y so it can't be aimed down
-            // we want the flashlight to always be leveled with the character
-            vectorTowardsMouse.y = Mathf.Max(vectorTowardsMouse.y, 0);
-            
-            float rotZ = Mathf.Atan2(vectorTowardsMouse.y, vectorTowardsMouse.x) * Mathf.Rad2Deg;
-
-            flashlightPivot.rotation = Quaternion.Euler(0, 0, rotZ);
+            valueX = (valueX == 0) ? ((IsFacingRight) ? 1 : -1) : valueX;
+            cursorWorldPoint = transform.position + Vector3.right * (5 * valueX) + Vector3.up * (5 * valueY);
         }
         else
         {
-            // if joystick, aim towards the joystick direction
-            float value = inputData.GetAxis();
+            // if mouse, get mouse world position and aim flashlight towards it
+            cursorWorldPoint = Camera.main.ScreenToWorldPoint(ReInput.controllers.Mouse.screenPosition);
 
         }
+        
+        vectorTowardsMouse = cursorWorldPoint - transform.position;
+        // clamps vector Y so it can't be aimed down
+        // we want the flashlight to always be leveled with the character
+        vectorTowardsMouse.y = Mathf.Max(vectorTowardsMouse.y, 0);
+            
+        float rotZ = Mathf.Atan2(vectorTowardsMouse.y, vectorTowardsMouse.x) * Mathf.Rad2Deg;
+
+        flashlightPivot.rotation = (IsFacingRight) 
+                                    ? Quaternion.Euler(0, 0, rotZ) 
+                                    : Quaternion.Euler(0, 180, 180 - rotZ);
     }
 
     private void InputInteract(InputActionEventData inputData)
