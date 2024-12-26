@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Rewired;
 using UnityEngine.Assertions;
@@ -7,12 +8,13 @@ using UnityEngine.Assertions;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerControl : MonoBehaviour
 {
+    public Action OnPauseTriggered;
     
     private Rewired.Player _input;
     private Rigidbody2D _rb;
     private CharacterHealth _health;
 
-    [Header("Player Movement")] 
+    [Header("Player Parameters")] 
     [SerializeField] private float moveSpeed;
     [SerializeField, Range(0, 1)] private float moveSpeedCrouchMultiplier;
     [SerializeField] private float jumpForce;
@@ -21,7 +23,8 @@ public class PlayerControl : MonoBehaviour
     
     public bool IsJumping { get; private set; }
     public bool IsCrouching { get; private set; }
-    public bool IsFlashlightOn { get; private set; }
+    public bool IsLookingUp { get; private set; }
+    public bool IsLookingBack { get; private set; }
     
     [Header("Ground check")]
     [SerializeField] private LayerMask groundCheckLayer;
@@ -31,13 +34,18 @@ public class PlayerControl : MonoBehaviour
     [Header("Additional Components")]
     [SerializeField] private Collider2D normalCollider;
     [SerializeField] private Collider2D crouchCollider;
-    [SerializeField] private Transform flashlightPivot;
-    [SerializeField] private GameObject flashlightObject;
+    [SerializeField] private PlayerFlashlight flashlight;
+    [SerializeField] private Transform flashlightTargetPivot;
     [SerializeField] private Collider2D interactionCollider;
+    [SerializeField] private Transform flashlightInputTest;
     public float VelocityY { get; private set; }
 
     public bool IsFacingRight { get; private set; } = true;
+
+    private Rewired.ControllerType _lastCursorInput;
     
+    private 
+        
     #region Initialization
     
     void Awake()
@@ -57,6 +65,8 @@ public class PlayerControl : MonoBehaviour
         _input.AddInputEventDelegate(InputJump, UpdateLoopType.Update, InputActionEventType.Update, "GP_Jump");
         _input.AddInputEventDelegate(InputFlashlight, UpdateLoopType.Update, InputActionEventType.Update, "GP_Flashlight");
         _input.AddInputEventDelegate(InputInteract, UpdateLoopType.Update, InputActionEventType.ButtonJustPressed, "GP_Interact");
+        _input.AddInputEventDelegate(InputRecharge, UpdateLoopType.Update, InputActionEventType.Update, "GP_Reload");
+        _input.AddInputEventDelegate(InputPause, UpdateLoopType.Update, InputActionEventType.ButtonJustPressed, "GP_Pause");
 
         _health.OnDeath += OnDeath;
         
@@ -73,6 +83,8 @@ public class PlayerControl : MonoBehaviour
         _input.RemoveInputEventDelegate(InputJump, UpdateLoopType.Update, InputActionEventType.Update, "GP_Jump");
         _input.RemoveInputEventDelegate(InputFlashlight, UpdateLoopType.Update, InputActionEventType.Update, "GP_Flashlight");
         _input.RemoveInputEventDelegate(InputInteract, UpdateLoopType.Update, InputActionEventType.ButtonJustPressed, "GP_Interact");
+        _input.RemoveInputEventDelegate(InputRecharge, UpdateLoopType.Update, InputActionEventType.Update, "GP_Reload");
+        _input.RemoveInputEventDelegate(InputPause, UpdateLoopType.Update, InputActionEventType.ButtonJustPressed, "GP_Pause");
         
         _health.OnDeath -= OnDeath;
         
@@ -134,6 +146,10 @@ public class PlayerControl : MonoBehaviour
 
     private void InputMove(InputActionEventData inputData)
     {
+        // can't move while recharging
+        if (flashlight.IsRecharging)
+            return;
+        
         float value = inputData.GetAxis();
 
         float crouchMultiplier = (IsCrouching) ? moveSpeedCrouchMultiplier : 1; 
@@ -148,18 +164,19 @@ public class PlayerControl : MonoBehaviour
     
     private void InputCrouch(InputActionEventData inputData)
     {
-        bool isPressedNow = inputData.GetButtonDown(),
-             isPressed = inputData.GetButton();
-
+        // can't crouch while recharging
+        if (flashlight.IsRecharging)
+            return;
+        
         bool previousCrouch = IsCrouching;
         if (crouchInputToggle)
         {
-            if (isPressedNow)
+            if (inputData.GetButtonDown())
                 IsCrouching = !IsCrouching;
         }
         else
         {
-            IsCrouching = isPressed;
+            IsCrouching = inputData.GetButton();
         }
 
         if (IsCrouching != previousCrouch)
@@ -173,8 +190,10 @@ public class PlayerControl : MonoBehaviour
     private float _jumpInputCacheCurrent;
     private void InputJump(InputActionEventData inputData)
     {
-        bool isPressed = inputData.GetButton();
-
+        // can't jump while recharging
+        if (flashlight.IsRecharging)
+            return;
+        
         if (inputData.GetButtonDown() && !IsCrouching)
         {
             _jumpInputCacheCurrent = jumpInputCacheDuration;
@@ -191,7 +210,7 @@ public class PlayerControl : MonoBehaviour
             _jumpInputCacheCurrent = 0;
         }
 
-        if (IsJumping && !isPressed)
+        if (IsJumping && !inputData.GetButton())
         {
             _rb.linearVelocityY = 0;
         }
@@ -203,58 +222,97 @@ public class PlayerControl : MonoBehaviour
 
     private void InputFlashlight(InputActionEventData inputData)
     {
-        bool isPressedNow = inputData.GetButtonDown(),
-             isPressed = inputData.GetButton();
-
         if (flashlightInputToggle)
         {
-            if (isPressedNow)
-                IsFlashlightOn = !IsFlashlightOn;
+            if (inputData.GetButtonDown())
+                flashlight.ToggleFlashlight();
         }
         else
         {
-            IsFlashlightOn = isPressed;
-        }
-
-        if (IsFlashlightOn != flashlightObject.activeSelf)
-        {
-            flashlightObject.SetActive(IsFlashlightOn);
+            if (inputData.GetButtonDown())
+                flashlight.TurnOn();
+            else if (inputData.GetButtonUp())
+                flashlight.TurnOff();
         }
     }
 
     private void InputFlashlightMove()
     {
-        Vector3 vectorTowardsMouse, cursorWorldPoint;
+        // first up, check on last device that gave input to flashlight movement
+        // to handle it appropriately
+        List<Rewired.InputActionSourceData> flashlightInputList = new (_input.GetCurrentInputSources("GP_FlashlightX"));
+        flashlightInputList.AddRange(_input.GetCurrentInputSources("GP_FlashlightY"));
 
-        if (_input.controllers.GetLastActiveController() == null)
-            return;
-        
-        if (_input.controllers.GetLastActiveController().type == ControllerType.Joystick)
+        if (flashlightInputList.Any())
         {
-            // joystick input
-            float valueX = _input.GetAxis("GP_FlashlightX"),
-                  valueY = _input.GetAxis("GP_FlashlightY");
-
-            valueX = (valueX == 0) ? ((IsFacingRight) ? 1 : -1) : valueX;
-            cursorWorldPoint = transform.position + Vector3.right * (5 * valueX) + Vector3.up * (5 * valueY);
+            _lastCursorInput = flashlightInputList[0].controllerType;
+            //Debug.Log($"Last Cursor input: {_lastCursorInput}");
         }
-        else
+
+        float rotValue = 0;
+        switch (_lastCursorInput)
         {
-            // if mouse, get mouse world position and aim flashlight towards it
-            cursorWorldPoint = Camera.main.ScreenToWorldPoint(ReInput.controllers.Mouse.screenPosition);
+            case ControllerType.Mouse:
+            {
+                // if mouse, get mouse world position and aim flashlight towards it
+                var cursorPos = Camera.main.ScreenToWorldPoint(ReInput.controllers.Mouse.screenPosition);
+                cursorPos.z = 0;
 
-        }
-        
-        vectorTowardsMouse = cursorWorldPoint - transform.position;
-        // clamps vector Y so it can't be aimed down
-        // we want the flashlight to always be leveled with the character
-        vectorTowardsMouse.y = Mathf.Max(vectorTowardsMouse.y, 0);
+                flashlightInputTest.position = cursorPos;
+                var testPos = flashlightInputTest.localPosition;
+                testPos.x = Mathf.Clamp(testPos.x, -2, 2);
+                testPos.y = Mathf.Clamp(testPos.y, -2, 2);
+                flashlightInputTest.localPosition = testPos;
+
+                
+                var vectorTowardsMouse = cursorPos - transform.position;
+                
+                // clamps vector Y so it can't be aimed down
+                // we want the flashlight to always be leveled with the character
+                vectorTowardsMouse.y = Mathf.Max(vectorTowardsMouse.y, 0);
             
-        float rotZ = Mathf.Atan2(vectorTowardsMouse.y, vectorTowardsMouse.x) * Mathf.Rad2Deg;
+                rotValue = Mathf.Atan2(vectorTowardsMouse.y, vectorTowardsMouse.x) * Mathf.Rad2Deg;
+                //flashlightCursor.position = cursorPos;
+                break;
+            }
 
-        flashlightPivot.rotation = (IsFacingRight) 
-                                    ? Quaternion.Euler(0, 0, rotZ) 
-                                    : Quaternion.Euler(0, 180, 180 - rotZ);
+            case ControllerType.Keyboard:
+            case ControllerType.Joystick:
+            {
+                float valueX = _input.GetAxis("GP_FlashlightX"),
+                    valueY = _input.GetAxis("GP_FlashlightY");
+
+                flashlightInputTest.localPosition = Vector3.right * (2*valueX) + Vector3.up * (2*valueY);
+                
+                // points cursor either left or right, depending on the look direction & axis input
+                if (IsFacingRight)
+                    rotValue = (valueX >= 0) ? 0 : 180;
+                else
+                    rotValue = (valueX <= 0) ? 180 : 0;
+
+                valueY = Mathf.Max(valueY, 0); // clamp Y from having negative values
+                var absX = Mathf.Abs(valueX);
+                
+                if (absX > 0.5)
+                {
+                    valueY = Mathf.Min(0.5f, valueY);
+                }
+                else if (valueY > 0.5f && absX > 0)
+                {
+                    valueY = Mathf.Min(valueY, valueY - absX);
+                }
+
+                rotValue += (rotValue > 0) ? valueY * -90 : valueY * 90;
+
+                Debug.Log($"Pivot rotation {rotValue} (X:{valueX} Y:{valueY})");
+                break;
+            }
+        }
+        flashlightTargetPivot.rotation = Quaternion.Euler(0, 0, rotValue);
+
+        IsLookingUp =  rotValue is > 45 and < 135;
+        IsLookingBack = (IsFacingRight) ? rotValue > 90 : rotValue < 90;
+        flashlight.SetRotation( (IsFacingRight) ? rotValue : 180 - rotValue);
     }
 
     private void InputInteract(InputActionEventData inputData)
@@ -272,5 +330,19 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
+    private void InputRecharge(InputActionEventData obj)
+    {
+        if (obj.GetButtonDown())
+            flashlight.SetRechargeStatus(true);
+        
+        else if (obj.GetButtonUp())
+            flashlight.SetRechargeStatus(false);
+    }
+
+    private void InputPause(InputActionEventData obj)
+    {
+        OnPauseTriggered?.Invoke();
+    }
+    
     #endregion
 }
