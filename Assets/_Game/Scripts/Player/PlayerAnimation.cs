@@ -24,13 +24,14 @@ public class PlayerAnimation : MonoBehaviour
         Assert.IsNotNull(_playerHealth, "Could not find CharacterHealth component on root");
         
         _animator = GetComponent<Animator>();
-        _currentState = "Idle";
     }
 
     private void OnEnable()
     {
         _playerHealth.OnHurt += OnHurt;
         _playerHealth.OnDeath += OnDeath;
+        
+        SetAnimatorState("Idle");
     }
 
     private void OnDisable()

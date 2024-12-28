@@ -15,7 +15,7 @@ public class CharacterHealth : MonoBehaviour
    public bool IsDead => CurrentHealth <= 0;
    public bool IsFull => CurrentHealth >= maxHealth;
    
-   private void Start()
+   private void OnEnable()
    {
       CurrentHealth = maxHealth;
    }
@@ -37,7 +37,12 @@ public class CharacterHealth : MonoBehaviour
 
    public void Heal(int amount)
    {
-      CurrentHealth = Mathf.Min(CurrentHealth + amount, maxHealth);
+      if (CurrentHealth >= maxHealth)
+         return;
+      
+      // limits amount to never exceed max health threshold
+      amount = Mathf.Min(amount, maxHealth - CurrentHealth);
+      CurrentHealth += amount;
       OnHeal?.Invoke(amount);
    }
 }

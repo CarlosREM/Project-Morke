@@ -18,7 +18,15 @@ public class PlayerFlashlight : MonoBehaviour
 
     private float _currentRechargeTime;
 
-    private void Start()
+    private void OnEnable()
+    {
+        CurrentEnergy = 100;
+        CanRecharge = false;
+        IsRecharging = false;
+        TurnOff();
+    }
+
+    private void OnDisable()
     {
         TurnOff();
     }

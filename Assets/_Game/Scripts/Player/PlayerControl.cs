@@ -11,8 +11,8 @@ public class PlayerControl : MonoBehaviour
     public Action OnPauseTriggered;
     
     private Rewired.Player _input;
-    private Rigidbody2D _rb;
-    private CharacterHealth _health;
+    public Rigidbody2D rb { get; private set; }
+    public CharacterHealth health { get; private set; }
 
     [Header("Player Parameters")] 
     [SerializeField] private float moveSpeed;
@@ -31,6 +31,13 @@ public class PlayerControl : MonoBehaviour
     [SerializeField, Tooltip("Changing Z does nothing")] private Bounds groundCheckBounds;
     public bool IsGrounded { get; private set; }
 
+    [Header("Camera Focus")] 
+    [SerializeField] private Transform camTargetPlayer;
+    public Transform CamTargetPlayer => camTargetPlayer;
+    [SerializeField] private Transform camTargetCursor;
+    public Transform CamTargetCursor => camTargetCursor;
+
+    
     [Header("Additional Components")]
     [SerializeField] private Collider2D normalCollider;
     [SerializeField] private Collider2D crouchCollider;
@@ -51,8 +58,8 @@ public class PlayerControl : MonoBehaviour
     void Awake()
     {
         _input = ReInput.players.SystemPlayer;
-        _rb = GetComponent<Rigidbody2D>();
-        _health = GetComponent<CharacterHealth>();
+        rb = GetComponent<Rigidbody2D>();
+        health = GetComponent<CharacterHealth>();
     }
 
     private void OnEnable()
@@ -68,7 +75,7 @@ public class PlayerControl : MonoBehaviour
         _input.AddInputEventDelegate(InputRecharge, UpdateLoopType.Update, InputActionEventType.Update, "GP_Reload");
         _input.AddInputEventDelegate(InputPause, UpdateLoopType.Update, InputActionEventType.ButtonJustPressed, "GP_Pause");
 
-        _health.OnDeath += OnDeath;
+        health.OnDeath += OnDeath;
         
         Debug.Log("[PlayerInput] <color=green>Ready</color>");
     }
@@ -86,7 +93,7 @@ public class PlayerControl : MonoBehaviour
         _input.RemoveInputEventDelegate(InputRecharge, UpdateLoopType.Update, InputActionEventType.Update, "GP_Reload");
         _input.RemoveInputEventDelegate(InputPause, UpdateLoopType.Update, InputActionEventType.ButtonJustPressed, "GP_Pause");
         
-        _health.OnDeath -= OnDeath;
+        health.OnDeath -= OnDeath;
         
         Debug.Log("[PlayerInput] <color=red>Disabled</color>");
     }
@@ -123,13 +130,13 @@ public class PlayerControl : MonoBehaviour
             IsCrouching = false;
         }
 
-        VelocityY = Mathf.Clamp(_rb.linearVelocityY, airMinVelocity, airMaxVelocity);
-        _rb.linearVelocityY = VelocityY;
+        VelocityY = Mathf.Clamp(rb.linearVelocityY, airMinVelocity, airMaxVelocity);
+        rb.linearVelocityY = VelocityY;
     }
 
     private bool GroundCheck()
     {
-        Vector2 groundCheckOrigin = _rb.position + (Vector2) groundCheckBounds.center;
+        Vector2 groundCheckOrigin = rb.position + (Vector2) groundCheckBounds.center;
         return Physics2D.BoxCast(groundCheckOrigin, groundCheckBounds.size, 0, Vector2.down, 0, groundCheckLayer);
     }
 
@@ -153,7 +160,7 @@ public class PlayerControl : MonoBehaviour
         float value = inputData.GetAxis();
 
         float crouchMultiplier = (IsCrouching) ? moveSpeedCrouchMultiplier : 1; 
-        _rb.linearVelocityX = value * moveSpeed * crouchMultiplier;
+        rb.linearVelocityX = value * moveSpeed * crouchMultiplier;
         MoveInput = value;
 
         if (value != 0)
@@ -205,16 +212,16 @@ public class PlayerControl : MonoBehaviour
 
         if (IsGrounded && _jumpInputCacheCurrent > 0)
         {
-            _rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             IsJumping = true;
             _jumpInputCacheCurrent = 0;
         }
 
         if (IsJumping && !inputData.GetButton())
         {
-            _rb.linearVelocityY = 0;
+            rb.linearVelocityY = 0;
         }
-        if (IsJumping && _rb.linearVelocityY <= 0)
+        if (IsJumping && rb.linearVelocityY <= 0)
         {
             IsJumping = false;
         }
