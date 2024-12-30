@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 [RequireComponent(typeof(Animator))]
 public class PlayerHudManager : MonoBehaviour
@@ -9,6 +11,10 @@ public class PlayerHudManager : MonoBehaviour
 
     [SerializeField] private float speedUpPerMissingHealth = 1.5f;
     
+    [SerializeField] private float deathAnimDuration = 2f;
+    [SerializeField] private float postDeathDelay = 1f;
+    public bool IsCoverOn { get; private set; }
+
     private void Awake()
     {
         _hudAnimator = GetComponent<Animator>();
@@ -21,9 +27,7 @@ public class PlayerHudManager : MonoBehaviour
         
         playerHealth.OnHurt += OnPlayerHurt;
         playerHealth.OnHeal += OnPlayerHeal;
-        playerHealth.OnDeath += OnPlayerDeath;
         
-        _hudAnimator.SetTrigger("Reset");
         _hudAnimator.SetFloat("HP Speed", 1);
     }
 
@@ -34,7 +38,6 @@ public class PlayerHudManager : MonoBehaviour
         
         playerHealth.OnHurt -= OnPlayerHurt;
         playerHealth.OnHeal -= OnPlayerHeal;
-        playerHealth.OnDeath -= OnPlayerDeath;
     }
 
 
@@ -62,10 +65,43 @@ public class PlayerHudManager : MonoBehaviour
         _hudAnimator.SetFloat("HP Speed", animSpeed);
     }
 
-    private void OnPlayerDeath()
+
+    public void SetCoverOn(int value)
     {
-        _hudAnimator.SetFloat("HP Speed", 1);
-        _hudAnimator.SetTrigger("Dead");
+        Assert.IsTrue(value == 0 || value == 1, "SetCoverOn value should be 0 or 1");
+        IsCoverOn = value == 1;
+        
+        //Debug.Log($"Set Cover On = {IsCoverOn} ({value})");
+    }
+
+    public void PlayerDeathAnim()
+    {
+        StartCoroutine(PlayerDeathAnimCoroutine());
+    }
+    
+    private IEnumerator PlayerDeathAnimCoroutine()
+    {
+        // trigger anim, wait til cover is on
+        _hudAnimator.SetTrigger("Cover Trigger");
+        yield return new WaitUntil(() => IsCoverOn);
+
+        // slow down heart beat anim speed until its set to 1
+        float hpParamValue = _hudAnimator.GetFloat("HP Speed"),
+                currentDuration = 0,
+                hpParamDelta;
+        do
+        {
+            hpParamDelta = Mathf.Lerp(hpParamValue, 1, currentDuration / deathAnimDuration);
+            _hudAnimator.SetFloat("HP Speed", hpParamDelta);
+            currentDuration += Time.deltaTime;
+            yield return null;
+        } while (currentDuration < deathAnimDuration);
+        
+        
+        yield return new WaitForSeconds(postDeathDelay);
+        
+        // turn cover off
+        _hudAnimator.SetTrigger("Cover Trigger");
     }
 
 

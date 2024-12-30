@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 6835695846208703700}
   - component: {fileID: 875561324987864814}
   m_Layer: 0
-  m_Name: Flashlight
+  m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -229,7 +229,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 5996449361197486485, guid: 117bad7a90cf96043b7b8a075298de11, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -865,7 +865,7 @@ GameObject:
   - component: {fileID: 4218151887427677738}
   - component: {fileID: 4687486338759026242}
   m_Layer: 0
-  m_Name: Flashlight Pivot
+  m_Name: Flashlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -226,6 +226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraRef: {fileID: 866610705718451590}
+  camComposer: {fileID: 7718647352242768348}
   targetGroup: {fileID: 8326465799939289788}
 --- !u!1 &7701823911129883990
 GameObject:
@@ -256,7 +257,7 @@ Transform:
   m_GameObject: {fileID: 7701823911129883990}
   serializedVersion: 2
   m_LocalRotation: {x: -6.070645e-18, y: -0.000000011815214, z: -7.172597e-26, w: 1}
-  m_LocalPosition: {x: 2.2727275, y: 4.3, z: -10}
+  m_LocalPosition: {x: 0.0000002370236, y: 0.70000017, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

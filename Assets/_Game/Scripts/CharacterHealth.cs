@@ -14,14 +14,19 @@ public class CharacterHealth : MonoBehaviour
 
    public bool IsDead => CurrentHealth <= 0;
    public bool IsFull => CurrentHealth >= maxHealth;
-   
+
+   public bool IsInvincible { get; set; }
+
    private void OnEnable()
    {
       CurrentHealth = maxHealth;
    }
 
    public void Hurt(int amount)
-   { 
+   {
+      if (IsInvincible || IsDead || !enabled)
+         return;
+      
       CurrentHealth -= amount;
       
       if (CurrentHealth <= 0)
@@ -37,7 +42,7 @@ public class CharacterHealth : MonoBehaviour
 
    public void Heal(int amount)
    {
-      if (CurrentHealth >= maxHealth)
+      if (IsFull || !enabled)
          return;
       
       // limits amount to never exceed max health threshold

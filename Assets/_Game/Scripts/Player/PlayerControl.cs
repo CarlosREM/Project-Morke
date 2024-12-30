@@ -77,6 +77,8 @@ public class PlayerControl : MonoBehaviour
 
         health.OnDeath += OnDeath;
         
+        camTargetCursor.gameObject.SetActive(true);
+        
         Debug.Log("[PlayerInput] <color=green>Ready</color>");
     }
 
@@ -94,6 +96,10 @@ public class PlayerControl : MonoBehaviour
         _input.RemoveInputEventDelegate(InputPause, UpdateLoopType.Update, InputActionEventType.ButtonJustPressed, "GP_Pause");
         
         health.OnDeath -= OnDeath;
+        
+        camTargetCursor.gameObject.SetActive(false);
+        MoveInput = 0;
+        VelocityY = 0;
         
         Debug.Log("[PlayerInput] <color=red>Disabled</color>");
     }
@@ -311,7 +317,7 @@ public class PlayerControl : MonoBehaviour
 
                 rotValue += (rotValue > 0) ? valueY * -90 : valueY * 90;
 
-                Debug.Log($"Pivot rotation {rotValue} (X:{valueX} Y:{valueY})");
+                //Debug.Log($"Pivot rotation {rotValue} (X:{valueX} Y:{valueY})");
                 break;
             }
         }

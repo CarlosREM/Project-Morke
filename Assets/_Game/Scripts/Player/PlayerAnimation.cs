@@ -153,6 +153,7 @@ public class PlayerAnimation : MonoBehaviour
             _animator.Play(state);
             _currentState = state;
             _animationDone = false;
+            //Debug.Log($"Setting animation to state {state}");
         }
         catch
         {
@@ -179,11 +180,18 @@ public class PlayerAnimation : MonoBehaviour
     
     private void OnHurt(int obj)
     {
-        SetAnimatorState("Hurt", true);
+        _animator.SetTrigger("Hurt");
+        //SetAnimatorState("Hurt", true);
     }
     private void OnDeath()
     {
+        _animator.SetTrigger("Dead");
         SetAnimatorState("Dead", true);
     }
 
+    public void Reset()
+    {
+        _animator.SetTrigger("Reset");
+        SetAnimatorState("Idle", true);
+    }
 }

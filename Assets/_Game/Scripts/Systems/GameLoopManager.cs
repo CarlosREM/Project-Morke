@@ -16,6 +16,7 @@ public class GameLoopManager : MonoBehaviour
     private int _currentCheckpointIndex = 0;
 
     private PlayerControl _playerRef;
+    private PlayerCameraManager _camRef;
     private PlayerHudManager _hudRef;
     
     private void Awake()
@@ -37,32 +38,39 @@ public class GameLoopManager : MonoBehaviour
 
     private void OnPlayerDeath()
     {
-        StartCoroutine(LoopResetCoroutine());
+        StartCoroutine(PlayerDeathSequenceCoroutine());
     }
 
-    private IEnumerator LoopResetCoroutine()
+    private IEnumerator PlayerDeathSequenceCoroutine()
     {
-        yield return new WaitForSeconds(2);
+        _playerRef.health.enabled = false; // can no longer be hurt, just in case
+        _camRef.FocusPlayer();
+        _hudRef.PlayerDeathAnim();
         
-        // fade in transition panel
+        // dont move player until transition panel is fully active
+        yield return new WaitUntil( ()=> _hudRef.IsCoverOn);
+        
+        _camRef.SetDamping(Vector3.zero); // remove damping so camera remains static when teleporting the player
+        
         yield return null;
-
-        // disable player objects so everything resets
-        _playerRef.gameObject.SetActive(false);
-        _hudRef.enabled = false;
         
         // reset player position to the last checkpoint
         var checkpoint = Instance._currentLevelManager.GetLevelCheckpoint(Instance._currentCheckpointIndex);
         _playerRef.transform.position = checkpoint.position;
 
-        yield return null;
+        // TODO: reset all enemies
         
-        _playerRef.gameObject.SetActive(true);
+        // wait til transition panel fades out to return control
+        yield return new WaitUntil( ()=> !_hudRef.IsCoverOn);
+
+        _playerRef.GetComponentInChildren<PlayerAnimation>().Reset();
+        
+        yield return new WaitForSeconds(1f);
+        
+        _playerRef.health.enabled = true;
         _playerRef.enabled = true; // component disables on death
-        _hudRef.enabled = true;
         
-        // fade out transition panel
-        yield return null;
+        _camRef.ResetFocus();
     }
 
     #region Static Methods
@@ -92,6 +100,7 @@ public class GameLoopManager : MonoBehaviour
         playerHud.Initialize(player.health);
 
         Instance._playerRef = player;
+        Instance._camRef = playerCamera;
         Instance._hudRef = playerHud;
     }
     
