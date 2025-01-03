@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-public class MorkelEditorMenus : MonoBehaviour
+public class MorkelEditorMenus
 {
     [MenuItem("GameObject/Morkel (Editor)/Create Prefab/Level Manager")]
     private static void CreateLevelManager()

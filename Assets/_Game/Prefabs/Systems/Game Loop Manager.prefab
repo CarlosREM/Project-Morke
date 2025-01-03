@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b6f300dcc3a3b640b0ba3ec923bdb7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameInputManager: {fileID: 3777946354689602382, guid: 745d8f845b344944a92e6851aa2a2d38, type: 3}
   playerPrefab: {fileID: 4297840739752708178, guid: 1356f90a80c7aa54c9d1bab95e878f63, type: 3}
   cameraPrefab: {fileID: 601144256583794599, guid: d0551d0518fac5146bb014c3e2a00da1, type: 3}
   playerHudPrefab: {fileID: 5952606913574336945, guid: 1c2bfdb840b95c4438625e28fd938317, type: 3}

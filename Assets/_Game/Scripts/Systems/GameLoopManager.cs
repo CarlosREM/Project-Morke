@@ -2,18 +2,22 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 
 public class GameLoopManager : MonoBehaviour
 {
     public static GameLoopManager Instance { get; private set; }
-
+    
     [Header("Game Prefabs")]
+    #if UNITY_EDITOR
+    [SerializeField] private GameInputManager gameInputManager; // editor only, since this should come from the very first scene
+    #endif
     [SerializeField] private PlayerControl playerPrefab;
     [SerializeField] private PlayerCameraManager cameraPrefab;
     [SerializeField] private PlayerHudManager playerHudPrefab;
-    
-    private LevelManager _currentLevelManager;
-    private int _currentCheckpointIndex = 0;
+
+    public static LevelManager CurrentLevelManager { get; set; }
+    public static int CheckpointIndex { get; set; }
 
     private PlayerControl _playerRef;
     private PlayerCameraManager _camRef;
@@ -55,7 +59,7 @@ public class GameLoopManager : MonoBehaviour
         yield return null;
         
         // reset player position to the last checkpoint
-        var checkpoint = Instance._currentLevelManager.GetLevelCheckpoint(Instance._currentCheckpointIndex);
+        var checkpoint = CurrentLevelManager.GetLevelCheckpoint(CheckpointIndex);
         _playerRef.transform.position = checkpoint.position;
 
         // TODO: reset all enemies
@@ -77,18 +81,20 @@ public class GameLoopManager : MonoBehaviour
     
     public static void InitializeLevel()
     {
-        if (!Instance)
-            return;
-        
-        if (!Instance._currentLevelManager)
+        #if UNITY_EDITOR
+        if (!GameInputManager.Instance)
         {
-            // a level manager is REQUIRED in every playable level
-            Instance._currentLevelManager = GameObject.FindWithTag("Level Manager").GetComponent<LevelManager>();
+            // just making sure input object exists
+            Instantiate(Instance.gameInputManager);
         }
+        #endif
         
-        Assert.IsNotNull(Instance._currentLevelManager, "No level manager found");
+        Assert.IsNotNull(Instance, "Game Loop Manager instance hasn't been initialized.");
+        
+        // a level manager is REQUIRED in every playable level
+        Assert.IsNotNull(CurrentLevelManager, "Game Loop Manager has no Level Manager reference");
 
-        var checkpoint = Instance._currentLevelManager.GetLevelCheckpoint(Instance._currentCheckpointIndex);
+        var checkpoint = CurrentLevelManager.GetLevelCheckpoint(CheckpointIndex);
         
         var player = Instantiate(Instance.playerPrefab, checkpoint.transform.position, Quaternion.identity);
         player.health.OnDeath += Instance.OnPlayerDeath;
@@ -97,20 +103,26 @@ public class GameLoopManager : MonoBehaviour
         playerCamera.Initialize(player);
         
         var playerHud = Instantiate(Instance.playerHudPrefab, Vector3.zero, Quaternion.identity);
-        playerHud.Initialize(player.health);
+        playerHud.Initialize(player);
 
         Instance._playerRef = player;
         Instance._camRef = playerCamera;
         Instance._hudRef = playerHud;
     }
     
-
-    public static void SetCheckpointIndex(int index)
+    public static void ExitGameLoop()
     {
-        if (!Instance)
-            return;
+        TransitionManager.onTransitionInComplete += OnTransitionInComplete;
+
+        TransitionManager.TransitionFadeIn();
         
-        Instance._currentCheckpointIndex = index;
+        
+        void OnTransitionInComplete()
+        {
+            SceneManager.LoadSceneAsync("MainMenu"); // 1 should be main menu
+            Destroy(Instance.gameObject);
+        }
+        
     }
     
     #endregion

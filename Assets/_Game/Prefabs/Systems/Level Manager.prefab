@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee904166dd94cc149b3f4bbb19b4e2b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameLoopManagerPrefab: {fileID: 9031562582060516338, guid: 817bf255f42fbde4ea0770b93c8c64af, type: 3}
   levelCheckpoints:
   - {fileID: 2643188692254936698}
 --- !u!1 &5157927250725423194

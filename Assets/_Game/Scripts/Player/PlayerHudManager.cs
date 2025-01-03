@@ -13,11 +13,17 @@ public class PlayerHudManager : MonoBehaviour
     
     [SerializeField] private float deathAnimDuration = 2f;
     [SerializeField] private float postDeathDelay = 1f;
+
+    [SerializeField] private PauseMenuController pauseMenu;
+    
     public bool IsCoverOn { get; private set; }
 
+    #region Initialization
+    
     private void Awake()
     {
         _hudAnimator = GetComponent<Animator>();
+        pauseMenu.HudRef = this;
     }
 
     private void OnEnable()
@@ -41,11 +47,16 @@ public class PlayerHudManager : MonoBehaviour
     }
 
 
-    public void Initialize(CharacterHealth pPlayerHealth)
+    public void Initialize(PlayerControl player)
     {
-        this.playerHealth = pPlayerHealth;
+        this.playerHealth = player.health;
+        player.OnPauseTriggered += ShowPauseMenu;
         this.OnEnable();
     }
+
+    #endregion
+    
+    #region HP widget
     
     private void OnPlayerHurt(int hurtAmount)
     {
@@ -65,6 +76,9 @@ public class PlayerHudManager : MonoBehaviour
         _hudAnimator.SetFloat("HP Speed", animSpeed);
     }
 
+    #endregion
+    
+    #region On Player Death
 
     public void SetCoverOn(int value)
     {
@@ -104,5 +118,14 @@ public class PlayerHudManager : MonoBehaviour
         _hudAnimator.SetTrigger("Cover Trigger");
     }
 
+    #endregion
 
+    #region Pause Menu
+    
+    public void ShowPauseMenu()
+    {
+        pauseMenu.gameObject.SetActive(true);
+    }
+
+    #endregion
 }
