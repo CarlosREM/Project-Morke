@@ -57,7 +57,7 @@ public class PlayerControl : MonoBehaviour
     
     void Awake()
     {
-        _input = ReInput.players.SystemPlayer;
+        _input = GameInputManager.MainPlayer;
         rb = GetComponent<Rigidbody2D>();
         health = GetComponent<CharacterHealth>();
     }
@@ -323,7 +323,7 @@ public class PlayerControl : MonoBehaviour
         }
         flashlightTargetPivot.rotation = Quaternion.Euler(0, 0, rotValue);
 
-        IsLookingUp =  rotValue is > 45 and < 135;
+        IsLookingUp =  rotValue is > 40 and < 140;
         IsLookingBack = (IsFacingRight) ? rotValue > 90 : rotValue < 90;
         flashlight.SetRotation( (IsFacingRight) ? rotValue : 180 - rotValue);
     }

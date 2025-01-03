@@ -55,6 +55,9 @@ public class PlayerAnimation : MonoBehaviour
             var lookRotation = (_playerControl.IsFacingRight) ? 0f : 180f;
             transform.rotation = Quaternion.Euler(0, lookRotation, rotation.eulerAngles.z);
         }
+        
+        _animator.SetFloat("LookH", (_playerControl.IsLookingBack) ? -1 : 1);
+        _animator.SetFloat("LookV", (_playerControl.IsLookingUp) ? 1 : 0);
     }
     
     private void AnimationStateLoop()
