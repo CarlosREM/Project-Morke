@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerFlashlight : MonoBehaviour
@@ -18,6 +19,8 @@ public class PlayerFlashlight : MonoBehaviour
 
     private float _currentRechargeTime;
 
+    private float _rotateTowards;
+
     private void OnEnable()
     {
         CurrentEnergy = 100;
@@ -28,6 +31,7 @@ public class PlayerFlashlight : MonoBehaviour
 
     private void OnDisable()
     {
+        transform.localRotation = Quaternion.identity;
         TurnOff();
     }
 
@@ -59,6 +63,8 @@ public class PlayerFlashlight : MonoBehaviour
                 _currentRechargeTime = 0;
             }
         }
+        
+        transform.localRotation = Quaternion.RotateTowards(transform.localRotation, Quaternion.Euler(0, 0, _rotateTowards), 2.5f);
     }
 
     public void ToggleFlashlight()
@@ -99,6 +105,6 @@ public class PlayerFlashlight : MonoBehaviour
 
     public void SetRotation(float value)
     {
-        transform.localRotation = Quaternion.RotateTowards(transform.localRotation, Quaternion.Euler(0, 0, value), 5);
+        _rotateTowards = value;
     }
 }

@@ -28,7 +28,7 @@ public class PauseMenuController : MonoBehaviour
 
     public void ButtonResume()
     {
-        gameObject.SetActive(false);
+        HudRef.HidePauseMenu();
     }
     
     public void ButtonMainMenu()

@@ -10,7 +10,7 @@ public class GameInputManager : MonoBehaviour
 
     public static Player MainPlayer => ReInput.players.SystemPlayer;
 
-    
+
     private void Awake()
     {
         if (Instance)
@@ -18,9 +18,27 @@ public class GameInputManager : MonoBehaviour
             Destroy(this.gameObject);
             return;
         }
-        
+
         Instance = this;
         InputManager = GetComponent<Rewired.InputManager>();
+        
+        ReInput.ControllerConnectedEvent += OnControllerConnected;
+        ReInput.ControllerPreDisconnectEvent += OnControllerPreDisconnect;
+        
+        Debug.Log("[Game Input Manager] <color=green>Ready</color>");
+    }
+
+    private void OnControllerConnected(ControllerStatusChangedEventArgs obj)
+    {
+        ReInput.controllers.RemoveControllerFromAllPlayers(obj.controller);
+        MainPlayer.controllers.AddController(obj.controller, true);
+        Debug.Log($"Controller \"{obj.controller.name}\" was connected and assigned to System player");
+    }
+
+    private void OnControllerPreDisconnect(ControllerStatusChangedEventArgs obj)
+    {
+        ReInput.controllers.RemoveControllerFromAllPlayers(obj.controller);
+        Debug.Log($"Controller \"{obj.controller.name}\" has disconnected");
     }
 
     public static void ChangeInputMap(string mapName)

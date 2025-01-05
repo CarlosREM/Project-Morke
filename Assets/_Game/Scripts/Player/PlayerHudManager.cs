@@ -6,7 +6,7 @@ using UnityEngine.Assertions;
 [RequireComponent(typeof(Animator))]
 public class PlayerHudManager : MonoBehaviour
 {
-    [SerializeField] private CharacterHealth playerHealth;
+    [SerializeField] private PlayerControl playerRef;
     private Animator _hudAnimator;
 
     [SerializeField] private float speedUpPerMissingHealth = 1.5f;
@@ -14,6 +14,7 @@ public class PlayerHudManager : MonoBehaviour
     [SerializeField] private float deathAnimDuration = 2f;
     [SerializeField] private float postDeathDelay = 1f;
 
+    [SerializeField] private Transform worldCanvas;
     [SerializeField] private PauseMenuController pauseMenu;
     
     public bool IsCoverOn { get; private set; }
@@ -28,28 +29,28 @@ public class PlayerHudManager : MonoBehaviour
 
     private void OnEnable()
     {
-        if (!playerHealth)
+        if (!playerRef || !playerRef.health)
             return;
         
-        playerHealth.OnHurt += OnPlayerHurt;
-        playerHealth.OnHeal += OnPlayerHeal;
+        playerRef.health.OnHurt += OnPlayerHurt;
+        playerRef.health.OnHeal += OnPlayerHeal;
         
         _hudAnimator.SetFloat("HP Speed", 1);
     }
 
     private void OnDisable()
     {
-        if (!playerHealth)
+        if (!playerRef || !playerRef.health)
             return;
         
-        playerHealth.OnHurt -= OnPlayerHurt;
-        playerHealth.OnHeal -= OnPlayerHeal;
+        playerRef.health.OnHurt -= OnPlayerHurt;
+        playerRef.health.OnHeal -= OnPlayerHeal;
     }
 
 
     public void Initialize(PlayerControl player)
     {
-        this.playerHealth = player.health;
+        playerRef = player;
         player.OnPauseTriggered += ShowPauseMenu;
         this.OnEnable();
     }
@@ -124,8 +125,20 @@ public class PlayerHudManager : MonoBehaviour
     
     public void ShowPauseMenu()
     {
+        playerRef.enabled = false;
         pauseMenu.gameObject.SetActive(true);
     }
 
+    public void HidePauseMenu()
+    {
+        playerRef.enabled = true;
+        pauseMenu.gameObject.SetActive(false);
+    }
+
     #endregion
+
+    public void SetWorldCanvasPosition(Vector3 worldCanvasPosition)
+    {
+        worldCanvas.position = worldCanvasPosition;
+    }
 }

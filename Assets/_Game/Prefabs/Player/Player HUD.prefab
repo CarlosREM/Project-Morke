@@ -47,10 +47,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e616e0e635553c647b7f058310028932, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerHealth: {fileID: 0}
+  playerRef: {fileID: 0}
   speedUpPerMissingHealth: 1.5
   deathAnimDuration: 2
   postDeathDelay: 2
+  worldCanvas: {fileID: 8594352903435804164}
   pauseMenu: {fileID: 2166355264597379660}
 --- !u!95 &5195873089309778319
 Animator:
@@ -309,8 +310,8 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -711203713
+  m_SortingOrder: -5
   m_TargetDisplay: 0
 --- !u!1 &7551010958656453269
 GameObject:

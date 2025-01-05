@@ -51,6 +51,8 @@ public class GameLoopManager : MonoBehaviour
         _camRef.FocusPlayer();
         _hudRef.PlayerDeathAnim();
         
+        _hudRef.SetWorldCanvasPosition(_playerRef.transform.position);
+        
         // dont move player until transition panel is fully active
         yield return new WaitUntil( ()=> _hudRef.IsCoverOn);
         
@@ -61,7 +63,8 @@ public class GameLoopManager : MonoBehaviour
         // reset player position to the last checkpoint
         var checkpoint = CurrentLevelManager.GetLevelCheckpoint(CheckpointIndex);
         _playerRef.transform.position = checkpoint.position;
-
+        _hudRef.SetWorldCanvasPosition(checkpoint.position); // don't let the hud stay behind or the illusion breaks!
+        
         // TODO: reset all enemies
         
         // wait til transition panel fades out to return control

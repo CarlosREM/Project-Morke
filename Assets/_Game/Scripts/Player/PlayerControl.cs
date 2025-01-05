@@ -78,6 +78,8 @@ public class PlayerControl : MonoBehaviour
         health.OnDeath += OnDeath;
         
         camTargetCursor.gameObject.SetActive(true);
+        flashlight.enabled = true;
+        rb.bodyType = RigidbodyType2D.Dynamic;
         
         Debug.Log("[PlayerInput] <color=green>Ready</color>");
     }
@@ -106,6 +108,11 @@ public class PlayerControl : MonoBehaviour
 
     private void OnDeath()
     {
+        IsLookingUp = false;
+        IsLookingBack = false;
+        flashlight.enabled = false;
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.linearVelocity = Vector2.zero;
         this.enabled = false;
     }
     
