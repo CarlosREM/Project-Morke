@@ -37,4 +37,11 @@ public class MorkelEditorMenus
         var prefabAsset = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Game/Prefabs/Utils/PlaceholderCamera.prefab");
         PrefabUtility.InstantiatePrefab(prefabAsset);    
     }
+    
+    [MenuItem("GameObject/Morkel (Editor)/Create Prefab/Reference Player")]
+    private static void CreateReferencePlayer()
+    {
+        var prefabAsset = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Game/Prefabs/Player/Reference Player.prefab");
+        PrefabUtility.InstantiatePrefab(prefabAsset);    
+    }
 }
