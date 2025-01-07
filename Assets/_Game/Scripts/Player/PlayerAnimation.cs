@@ -166,6 +166,9 @@ public class PlayerAnimation : MonoBehaviour
 
     private bool AirCheck()
     {
+        if (_playerControl.IsGrounded)
+            return false;
+        
         if (_playerControl.VelocityY > 0)
         {
             SetAnimatorState("Air Up");

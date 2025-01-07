@@ -10,6 +10,9 @@ public class DamageTrigger : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (!other.attachedRigidbody)
+            return;
+        
         // ignore object if it doesn't have a health component
         if (!other.attachedRigidbody.TryGetComponent<CharacterHealth>(out var otherHealth))
             return;

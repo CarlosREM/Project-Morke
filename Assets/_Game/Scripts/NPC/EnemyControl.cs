@@ -8,9 +8,12 @@ public class EnemyControl : MonoBehaviour
     private CharacterHealth _health;
 
     [Header("Components")] 
+    [SerializeField] private Animator animator;
     [SerializeField] private ParticleSystem onHurtParticles;
-    
-    [Header("Parameters")]
+
+    [Header("Parameters")] 
+    [SerializeField] private float activateDelay = 1f;
+    [SerializeField] private float respawnDelay = 6f;
     [SerializeField] private float flashlightDmgDelay;
     private float _currentLightTime;
     private bool _isInsideLight;
@@ -19,6 +22,7 @@ public class EnemyControl : MonoBehaviour
     {
         _agent = GetComponent<BehaviorGraphAgent>();
         _health = GetComponent<CharacterHealth>();
+        _health.IsInvincible = true;
     }
 
     private void OnEnable()
@@ -27,6 +31,7 @@ public class EnemyControl : MonoBehaviour
             return;
         
         _health.OnDeath += OnDeath;
+        Invoke(nameof(OnSpawn), activateDelay);
     }
 
     private void OnDisable()
@@ -36,43 +41,66 @@ public class EnemyControl : MonoBehaviour
         
         _health.OnDeath -= OnDeath;
     }
+
+    private void OnSpawn()
+    {
+        _agent.enabled = true;
+        _health.IsInvincible = false;
+    }
     
     private void OnDeath()
     {
-        gameObject.SetActive(false);
+        onHurtParticles.Play();
+        animator.SetTrigger("Dead");
+        _agent.enabled = false;
+        _health.enabled = false;
+        _health.IsInvincible = true;
+        
+        Invoke(nameof(OnRespawn), respawnDelay);
+    }
+
+    private void OnRespawn()
+    {
+        _health.enabled = true;
+        animator.SetTrigger("Reset");
+        Invoke(nameof(OnSpawn), activateDelay);
     }
 
     private void Update()
     {
-        if (_isInsideLight)
+        if (_isInsideLight && !_health.IsInvincible)
         {
             _currentLightTime += Time.deltaTime;
             if (_currentLightTime >= flashlightDmgDelay)
             {
                 _health.Hurt(1);
                 _currentLightTime = 0;
-                onHurtParticles.gameObject.SetActive(true);
+                onHurtParticles.Play();
             }
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (!other.CompareTag("Player"))
+            return;
+        
         if (other.attachedRigidbody.GetComponent<PlayerFlashlight>())
         {
             _isInsideLight = true;
             _currentLightTime = 0;
-            Debug.Log("OH NO NOT THE LIGHT");
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
+        if (!other.CompareTag("Player"))
+            return;
+        
         if (other.attachedRigidbody.GetComponent<PlayerFlashlight>())
         {
             _isInsideLight = false;
             _currentLightTime = 0;
-            Debug.Log("Phew, im out of that now");
         }
     }
 }
