@@ -42,4 +42,27 @@ public class LevelManager : MonoBehaviour
     {
         GameLoopManager.CheckpointIndex = checkpointIndex;
     }
+    
+    [Header("(Placeholder) Win Conditions")]
+    [SerializeField] private int totalBreakers = 2;
+    private int _currentBreakers = 0;
+    [SerializeField] private GameObject livingRoomLight;
+    [SerializeField] private GameObject livingRoomDoor;
+
+    [SerializeField] private List<string> objectives = new();
+    
+    public void OnBreakerEnabled()
+    {
+        _currentBreakers++;
+        if (_currentBreakers == totalBreakers)
+        {
+            EnableLivingRoom();
+        }
+    }
+    
+    public void EnableLivingRoom()
+    {
+        livingRoomLight.SetActive(true);
+        livingRoomDoor.SetActive(true);
+    }
 }

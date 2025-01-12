@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Animator))]
 public class PlayerHudManager : MonoBehaviour
@@ -9,13 +10,22 @@ public class PlayerHudManager : MonoBehaviour
     [SerializeField] private PlayerControl playerRef;
     private Animator _hudAnimator;
 
+    [Header("HUD Parameters")] 
+    [SerializeField] private RectTransform gameOverlay;
+    [SerializeField] private CanvasGroup tutorialHints;
+    [SerializeField] private float tutorialDuration;
+    [SerializeField] private float tutorialFadeDuration;
+                     private float _currentTutorialDuration;
     [SerializeField] private float speedUpPerMissingHealth = 1.5f;
+    [SerializeField] private Slider batterySlider;
+    [SerializeField] private RectTransform batteryRechargeIcon;
+    [SerializeField] private PauseMenuController pauseMenu;
     
+    [Header("World Canvas Parameters")]
+    [SerializeField] private Transform worldCanvas;
     [SerializeField] private float deathAnimDuration = 2f;
     [SerializeField] private float postDeathDelay = 1f;
 
-    [SerializeField] private Transform worldCanvas;
-    [SerializeField] private PauseMenuController pauseMenu;
     
     public bool IsCoverOn { get; private set; }
 
@@ -47,6 +57,33 @@ public class PlayerHudManager : MonoBehaviour
         playerRef.health.OnHeal -= OnPlayerHeal;
     }
 
+    private void Update()
+    {
+        float energy = playerRef.flashlight.CurrentEnergy;
+        if (energy > 80)
+            batterySlider.value = 3;
+        else if (energy > 40)
+            batterySlider.value = 2;
+        else if (energy > 0)
+            batterySlider.value = 1;
+        else
+            batterySlider.value = 0;
+
+        if (playerRef.flashlight.IsRecharging != batteryRechargeIcon.gameObject.activeSelf)
+            batteryRechargeIcon.gameObject.SetActive(playerRef.flashlight.IsRecharging);
+        
+        // tutorial fade out
+        if (_currentTutorialDuration < tutorialDuration + tutorialFadeDuration)
+        {
+            _currentTutorialDuration += Time.deltaTime;
+            if (_currentTutorialDuration > tutorialDuration)
+            {
+                tutorialHints.alpha = Mathf.Lerp(1, 0, (_currentTutorialDuration-tutorialDuration) / tutorialFadeDuration);
+                if (tutorialHints.alpha <= 0)
+                    tutorialHints.gameObject.SetActive(false);
+            }
+        }
+    }
 
     public void Initialize(PlayerControl player)
     {
@@ -126,6 +163,7 @@ public class PlayerHudManager : MonoBehaviour
     public void ShowPauseMenu()
     {
         playerRef.enabled = false;
+        gameOverlay.gameObject.SetActive(false);
         pauseMenu.gameObject.SetActive(true);
     }
 
@@ -133,6 +171,7 @@ public class PlayerHudManager : MonoBehaviour
     {
         playerRef.enabled = true;
         pauseMenu.gameObject.SetActive(false);
+        gameOverlay.gameObject.SetActive(true);
     }
 
     #endregion

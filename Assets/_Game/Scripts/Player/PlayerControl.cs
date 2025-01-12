@@ -41,7 +41,7 @@ public class PlayerControl : MonoBehaviour
     [Header("Additional Components")]
     [SerializeField] private Collider2D normalCollider;
     [SerializeField] private Collider2D crouchCollider;
-    [SerializeField] private PlayerFlashlight flashlight;
+    public PlayerFlashlight flashlight;
     [SerializeField] private Transform flashlightTargetPivot;
     [SerializeField] private Collider2D interactionCollider;
     [SerializeField] private Transform flashlightInputTest;
@@ -51,11 +51,9 @@ public class PlayerControl : MonoBehaviour
 
     private Rewired.ControllerType _lastCursorInput;
     
-    private 
-        
     #region Initialization
     
-    void Awake()
+    private void Awake()
     {
         _input = GameInputManager.MainPlayer;
         rb = GetComponent<Rigidbody2D>();
@@ -68,7 +66,7 @@ public class PlayerControl : MonoBehaviour
         
         //set input callbacks
         _input.AddInputEventDelegate(InputMove, UpdateLoopType.Update, InputActionEventType.Update, "GP_Move");
-        _input.AddInputEventDelegate(InputCrouch, UpdateLoopType.Update, InputActionEventType.Update, "GP_Crouch");
+        //_input.AddInputEventDelegate(InputCrouch, UpdateLoopType.Update, InputActionEventType.Update, "GP_Crouch");
         _input.AddInputEventDelegate(InputJump, UpdateLoopType.Update, InputActionEventType.Update, "GP_Jump");
         _input.AddInputEventDelegate(InputFlashlight, UpdateLoopType.Update, InputActionEventType.Update, "GP_Flashlight");
         _input.AddInputEventDelegate(InputInteract, UpdateLoopType.Update, InputActionEventType.ButtonJustPressed, "GP_Interact");
@@ -90,7 +88,7 @@ public class PlayerControl : MonoBehaviour
 
         // remove input callbacks
         _input.RemoveInputEventDelegate(InputMove, UpdateLoopType.Update, InputActionEventType.Update, "GP_Move");
-        _input.RemoveInputEventDelegate(InputCrouch, UpdateLoopType.Update, InputActionEventType.Update, "GP_Crouch");
+        //_input.RemoveInputEventDelegate(InputCrouch, UpdateLoopType.Update, InputActionEventType.Update, "GP_Crouch");
         _input.RemoveInputEventDelegate(InputJump, UpdateLoopType.Update, InputActionEventType.Update, "GP_Jump");
         _input.RemoveInputEventDelegate(InputFlashlight, UpdateLoopType.Update, InputActionEventType.Update, "GP_Flashlight");
         _input.RemoveInputEventDelegate(InputInteract, UpdateLoopType.Update, InputActionEventType.ButtonJustPressed, "GP_Interact");
@@ -342,7 +340,7 @@ public class PlayerControl : MonoBehaviour
 
         foreach (var hit in interactCastHits)
         {
-            if (hit.collider.TryGetComponent<Interactable>(out var interactableComp))
+            if (hit.collider.TryGetComponent<InteractableObject>(out var interactableComp))
             {
                 interactableComp.Interact(this.gameObject);
                 break;

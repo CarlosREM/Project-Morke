@@ -91,6 +91,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 3904238735428912406}
   onHurtParticles: {fileID: 203400874905984742}
+  canRespawn: 1
+  activateDelay: 1
+  respawnDelay: 6
   flashlightDmgDelay: 1
 --- !u!114 &3888395747934134704
 MonoBehaviour:
@@ -4998,7 +5001,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -10042,7 +10045,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -10135,8 +10138,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6323447188824183710}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10181,10 +10184,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -711203713
-  m_SortingLayer: 1
-  m_SortingOrder: -10
-  m_Sprite: {fileID: 4992551908721281092, guid: f5b2de6f1bad10c45b4dcf147feef8b3, type: 3}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 10
+  m_Sprite: {fileID: 1218170410749781986, guid: 29584d9845f1cf94d9661964607f8a26, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

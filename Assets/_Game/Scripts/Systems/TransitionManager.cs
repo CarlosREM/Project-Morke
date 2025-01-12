@@ -6,20 +6,20 @@ public class TransitionManager : MonoBehaviour
 {
     private Animator _transitionAnimator;
 
-    private static TransitionManager _instance;
+    public static TransitionManager Instance { get; private set; }
 
     public static Action onTransitionInComplete;
     public static Action onTransitionOutComplete;
     
     private void Awake()
     {
-        if (_instance != null)
+        if (Instance != null)
         {
             Destroy(this.gameObject);
             return;
         }
 
-        _instance = this;
+        Instance = this;
         DontDestroyOnLoad(this.gameObject);
         
         _transitionAnimator = GetComponent<Animator>();
@@ -37,19 +37,19 @@ public class TransitionManager : MonoBehaviour
     
     public static void TransitionFadeIn()
     {
-        if (!_instance)
+        if (!Instance)
             return;
         
-        _instance._transitionAnimator.SetBool("Fade", true);
-        _instance._transitionAnimator.SetTrigger("Transition");
+        Instance._transitionAnimator.SetBool("Fade", true);
+        Instance._transitionAnimator.SetTrigger("Transition");
     }
     
     public static void TransitionFadeOut()
     {
-        if (!_instance)
+        if (!Instance)
             return;
         
-        _instance._transitionAnimator.SetBool("Fade", false);
-        _instance._transitionAnimator.SetTrigger("Transition");
+        Instance._transitionAnimator.SetBool("Fade", false);
+        Instance._transitionAnimator.SetTrigger("Transition");
     }
 }

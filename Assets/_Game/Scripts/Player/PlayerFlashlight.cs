@@ -21,6 +21,9 @@ public class PlayerFlashlight : MonoBehaviour
 
     private float _rotateTowards;
 
+    [SerializeField] private RectTransform rechargeHint;
+    private bool _hintShowed;
+
     private void OnEnable()
     {
         CurrentEnergy = 100;
@@ -65,6 +68,17 @@ public class PlayerFlashlight : MonoBehaviour
         }
         
         transform.localRotation = Quaternion.RotateTowards(transform.localRotation, Quaternion.Euler(0, 0, _rotateTowards), 2.5f);
+
+        // show hint only once
+        if (!_hintShowed)
+        {
+            if (rechargeHint.gameObject.activeSelf != CanRecharge)
+            {
+                rechargeHint.gameObject.SetActive(CanRecharge);
+                if (!CanRecharge)
+                    _hintShowed = true;
+            }
+        }
     }
 
     public void ToggleFlashlight()
@@ -106,5 +120,10 @@ public class PlayerFlashlight : MonoBehaviour
     public void SetRotation(float value)
     {
         _rotateTowards = value;
+    }
+
+    public void AddRotation(float value)
+    {
+        _rotateTowards += value;
     }
 }

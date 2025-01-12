@@ -10,7 +10,9 @@ public class GameLoopManager : MonoBehaviour
     
     [Header("Game Prefabs")]
     #if UNITY_EDITOR
-    [SerializeField] private GameInputManager gameInputManager; // editor only, since this should come from the very first scene
+    // editor only, since these should come from the very first scene
+    [SerializeField] private GameInputManager gameInputManager; 
+    [SerializeField] private TransitionManager transitionManager;
     #endif
     [SerializeField] private PlayerControl playerPrefab;
     [SerializeField] private PlayerCameraManager cameraPrefab;
@@ -90,6 +92,11 @@ public class GameLoopManager : MonoBehaviour
             // just making sure input object exists
             Instantiate(Instance.gameInputManager);
         }
+
+        if (!TransitionManager.Instance)
+        {
+            Instantiate(Instance.transitionManager);
+        }
         #endif
         
         Assert.IsNotNull(Instance, "Game Loop Manager instance hasn't been initialized.");
@@ -122,6 +129,8 @@ public class GameLoopManager : MonoBehaviour
         
         void OnTransitionInComplete()
         {
+            TransitionManager.onTransitionInComplete -= OnTransitionInComplete;
+
             SceneManager.LoadSceneAsync("MainMenu"); // 1 should be main menu
             Destroy(Instance.gameObject);
         }

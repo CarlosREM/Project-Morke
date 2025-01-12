@@ -166,7 +166,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private bool AirCheck()
     {
-        if (_playerControl.IsGrounded)
+        if (_playerControl.IsGrounded && Mathf.Approximately(_playerControl.VelocityY, 0))
             return false;
         
         if (_playerControl.VelocityY > 0)

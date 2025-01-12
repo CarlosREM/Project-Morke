@@ -12,6 +12,7 @@ public class EnemyControl : MonoBehaviour
     [SerializeField] private ParticleSystem onHurtParticles;
 
     [Header("Parameters")] 
+    [SerializeField] private bool canRespawn;
     [SerializeField] private float activateDelay = 1f;
     [SerializeField] private float respawnDelay = 6f;
     [SerializeField] private float flashlightDmgDelay;
@@ -40,6 +41,9 @@ public class EnemyControl : MonoBehaviour
             return;
         
         _health.OnDeath -= OnDeath;
+        
+        canRespawn = false;
+        OnDeath();
     }
 
     private void OnSpawn()
@@ -56,7 +60,8 @@ public class EnemyControl : MonoBehaviour
         _health.enabled = false;
         _health.IsInvincible = true;
         
-        Invoke(nameof(OnRespawn), respawnDelay);
+        if (canRespawn)
+            Invoke(nameof(OnRespawn), respawnDelay);
     }
 
     private void OnRespawn()
