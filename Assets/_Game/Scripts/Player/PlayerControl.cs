@@ -176,7 +176,10 @@ public class PlayerControl : MonoBehaviour
 
         if (value != 0)
         {
+            bool previousDir = IsFacingRight; 
             IsFacingRight = value > 0;
+            if (previousDir != IsFacingRight) // flip flashlight rotation when character rotates
+                flashlight.FlipRotation(IsFacingRight);
         }
     }
     
@@ -240,6 +243,9 @@ public class PlayerControl : MonoBehaviour
 
     private void InputFlashlight(InputActionEventData inputData)
     {
+        if (flashlight.IsRecharging)
+            return;
+        
         if (flashlightInputToggle)
         {
             if (inputData.GetButtonDown())
@@ -348,12 +354,21 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
+    private bool btnPressedRecharge => btnBufferRecharge > 0;
+    private float btnBufferRecharge = 0;
     private void InputRecharge(InputActionEventData obj)
     {
         if (obj.GetButtonDown())
+            btnBufferRecharge = 0.1f;
+        
+        else if (!obj.GetButton())
+            btnBufferRecharge -= (btnBufferRecharge > 0) ? Time.deltaTime : 0;
+        
+        
+        if (btnPressedRecharge && !flashlight.IsRecharging)
             flashlight.SetRechargeStatus(true);
         
-        else if (obj.GetButtonUp())
+        else if (!btnPressedRecharge && flashlight.IsRecharging)
             flashlight.SetRechargeStatus(false);
     }
 

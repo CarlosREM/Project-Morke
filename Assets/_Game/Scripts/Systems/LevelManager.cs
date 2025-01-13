@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -48,15 +49,17 @@ public class LevelManager : MonoBehaviour
     private int _currentBreakers = 0;
     [SerializeField] private GameObject livingRoomLight;
     [SerializeField] private GameObject livingRoomDoor;
-
-    [SerializeField] private List<string> objectives = new();
+    [SerializeField] private FMODUnity.StudioEventEmitter sfxKnock;
+    [SerializeField, EditorScene] private int menuScene;
     
-    public void OnBreakerEnabled()
+    public void OnBreakerEnabled(int index)
     {
         _currentBreakers++;
+        GameLoopManager.Instance.HudRef.DisableObjective(index);
         if (_currentBreakers == totalBreakers)
         {
             EnableLivingRoom();
+            GameLoopManager.Instance.HudRef.EnableObjective(2);
         }
     }
     
@@ -64,5 +67,29 @@ public class LevelManager : MonoBehaviour
     {
         livingRoomLight.SetActive(true);
         livingRoomDoor.SetActive(true);
+    }
+
+    public void EndLevel()
+    {
+        GameLoopManager.Instance.PlayerRef.enabled = false;
+        TransitionManager.onTransitionInComplete += EndingTransition;
+        TransitionManager.TransitionFadeIn();
+
+        void EndingTransition()
+        {
+            TransitionManager.onTransitionInComplete -= EndingTransition;
+            StartCoroutine(EndingCoroutine());
+        }
+    }
+
+    IEnumerator EndingCoroutine()
+    {
+        yield return null;
+        
+        sfxKnock.Play();
+
+        yield return new WaitForSeconds(2);
+        
+        SceneManager.LoadSceneAsync(menuScene);
     }
 }

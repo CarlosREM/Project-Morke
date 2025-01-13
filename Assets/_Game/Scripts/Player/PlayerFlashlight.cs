@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FMOD.Studio;
 using UnityEngine;
 
 public class PlayerFlashlight : MonoBehaviour
@@ -24,18 +25,31 @@ public class PlayerFlashlight : MonoBehaviour
     [SerializeField] private RectTransform rechargeHint;
     private bool _hintShowed;
 
+    [SerializeField] private FMODUnity.StudioEventEmitter sfxRefLoop;
+    [SerializeField] private FMODUnity.StudioEventEmitter sfxRefOff;
+    [SerializeField] private float lowEnergyThreshold = 40;
+    private bool _lowEnergyEnabled;
+    
     private void OnEnable()
     {
         CurrentEnergy = 100;
         CanRecharge = false;
         IsRecharging = false;
-        TurnOff();
+        IsFlashlightOn = false;
+        lightObject.SetActive(false);
+
+        _lowEnergyEnabled = false;
+        sfxRefLoop.Params[0].Value = 0;
+        sfxRefOff.Params[0].Value = 0;
     }
 
     private void OnDisable()
     {
         transform.localRotation = Quaternion.identity;
-        TurnOff();
+        
+        IsFlashlightOn = false;
+        lightObject.SetActive(false);
+        sfxRefLoop.Stop();
     }
 
     private void Update()
@@ -47,8 +61,14 @@ public class PlayerFlashlight : MonoBehaviour
             if (CurrentEnergy < 0)
             {
                 CurrentEnergy = 0;
+                sfxRefOff.Params[0].Value = 1;
                 TurnOff();
                 CanRecharge = true;
+            }
+            else if (!_lowEnergyEnabled && CurrentEnergy < lowEnergyThreshold)
+            {
+                _lowEnergyEnabled = true;
+                sfxRefLoop.SetParameter(sfxRefLoop.Params[0].ID, 1);
             }
         }
 
@@ -61,9 +81,7 @@ public class PlayerFlashlight : MonoBehaviour
             // stop recharging if flashlight is full
             if (CurrentEnergy >= 100)
             {
-                IsRecharging = false;
-                CanRecharge = false;
-                _currentRechargeTime = 0;
+                SetRechargeStatus(false);
             }
         }
         
@@ -92,11 +110,15 @@ public class PlayerFlashlight : MonoBehaviour
     public void TurnOn()
     {
         if (CurrentEnergy <= 0)
+        {
+            sfxRefOff.Play();
             return;
-        
+        }
+
         IsFlashlightOn = true;
         
         lightObject.SetActive(true);
+        sfxRefLoop.Play();
     }
 
     public void TurnOff()
@@ -104,16 +126,25 @@ public class PlayerFlashlight : MonoBehaviour
         IsFlashlightOn = false;
 
         lightObject.SetActive(false);
+        sfxRefLoop.Stop();
+        sfxRefOff.Play();
+        _lowEnergyEnabled = false;
     }
 
     public void SetRechargeStatus(bool value)
     {
-        IsRecharging = value && CanRecharge;
+        if (!CanRecharge)
+            return;
+        
+        IsRecharging = value;
 
-        if (CanRecharge && !IsRecharging)
+        if (!IsRecharging)
         {
             CanRecharge = false;
             _currentRechargeTime = 0;
+            
+            sfxRefLoop.Params[0].Value = 0;
+            sfxRefOff.Params[0].Value = 0;
         }
     }
 
@@ -121,9 +152,10 @@ public class PlayerFlashlight : MonoBehaviour
     {
         _rotateTowards = value;
     }
-
-    public void AddRotation(float value)
+    
+    public void FlipRotation(bool isRight)
     {
-        _rotateTowards += value;
+        _rotateTowards = 180 - _rotateTowards;
+        transform.localRotation = Quaternion.Euler(0, 0, _rotateTowards);
     }
 }

@@ -103,12 +103,12 @@ TextureImporter:
       name: Player_Dead
       rect:
         serializedVersion: 2
-        x: 113
-        y: 139
-        width: 630
-        height: 782
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 0
+        y: 120
+        width: 791
+        height: 801
+      alignment: 9
+      pivot: {x: 0.4, y: 0.03}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

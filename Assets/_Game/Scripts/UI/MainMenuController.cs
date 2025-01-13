@@ -23,6 +23,7 @@ public class MainMenuController : MonoBehaviour
 
         void GoToLevel()
         {
+            TransitionManager.onTransitionInComplete -= GoToLevel;
             SceneManager.LoadSceneAsync(playScene);
         }
     }

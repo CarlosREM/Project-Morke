@@ -19,6 +19,7 @@ public class PlayerHudManager : MonoBehaviour
     [SerializeField] private float speedUpPerMissingHealth = 1.5f;
     [SerializeField] private Slider batterySlider;
     [SerializeField] private RectTransform batteryRechargeIcon;
+    [SerializeField] private TMPro.TextMeshProUGUI[] objectives;
     [SerializeField] private PauseMenuController pauseMenu;
     
     [Header("World Canvas Parameters")]
@@ -94,7 +95,7 @@ public class PlayerHudManager : MonoBehaviour
 
     #endregion
     
-    #region HP widget
+    #region UI
     
     private void OnPlayerHurt(int hurtAmount)
     {
@@ -114,6 +115,33 @@ public class PlayerHudManager : MonoBehaviour
         _hudAnimator.SetFloat("HP Speed", animSpeed);
     }
 
+    public void EnableObjective(int idx)
+    {
+        objectives[idx].gameObject.SetActive(true);
+    }
+    public void DisableObjective(int idx)
+    {
+        objectives[idx].gameObject.SetActive(false);
+    }
+    
+    #region Pause Menu
+    
+    public void ShowPauseMenu()
+    {
+        playerRef.enabled = false;
+        gameOverlay.gameObject.SetActive(false);
+        pauseMenu.gameObject.SetActive(true);
+    }
+
+    public void HidePauseMenu()
+    {
+        playerRef.enabled = true;
+        pauseMenu.gameObject.SetActive(false);
+        gameOverlay.gameObject.SetActive(true);
+    }
+
+    #endregion
+    
     #endregion
     
     #region On Player Death
@@ -158,23 +186,6 @@ public class PlayerHudManager : MonoBehaviour
 
     #endregion
 
-    #region Pause Menu
-    
-    public void ShowPauseMenu()
-    {
-        playerRef.enabled = false;
-        gameOverlay.gameObject.SetActive(false);
-        pauseMenu.gameObject.SetActive(true);
-    }
-
-    public void HidePauseMenu()
-    {
-        playerRef.enabled = true;
-        pauseMenu.gameObject.SetActive(false);
-        gameOverlay.gameObject.SetActive(true);
-    }
-
-    #endregion
 
     public void SetWorldCanvasPosition(Vector3 worldCanvasPosition)
     {

@@ -77,6 +77,9 @@ public class PlayerAnimation : MonoBehaviour
                 if (_playerControl.MoveInput != 0)
                     SetAnimatorState("Move");
 
+                if (_playerControl.flashlight.IsRecharging)
+                    SetAnimatorState("Recharge");
+                
                 break;
             }
             case "Move":
@@ -93,8 +96,20 @@ public class PlayerAnimation : MonoBehaviour
                 if (_playerControl.MoveInput == 0)
                     SetAnimatorState("Idle");
                 
+                if (_playerControl.flashlight.IsRecharging)
+                    SetAnimatorState("Recharge");
+                
                 break;
             }
+
+            case "Recharge":
+            {
+                if (!_playerControl.flashlight.IsRecharging)
+                    SetAnimatorState("Idle");
+                
+                break;
+            }
+            
             case "Air Up":
             {
                 AirCheck();

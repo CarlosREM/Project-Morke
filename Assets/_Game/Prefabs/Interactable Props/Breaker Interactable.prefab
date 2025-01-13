@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 9056815707474648317}
   - component: {fileID: 6232209094011736545}
   - component: {fileID: 1488443391884133162}
+  - component: {fileID: 4465593258370283775}
   m_Layer: 6
   m_Name: Breaker Interactable
   m_TagString: Untagged
@@ -117,7 +118,7 @@ Transform:
   m_GameObject: {fileID: 6244026480920185195}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 36.51, y: 13.53, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -321,3 +322,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2bac419dba50a44196e23f0b1e2b9f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sfx: {fileID: 4465593258370283775}
+--- !u!114 &4465593258370283775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6244026480920185195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1823672200
+      Data2: 1179540522
+      Data3: -1744469866
+      Data4: -1815494573
+    Path: event:/SFX/SFX Breaker on
+  Event: 
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20

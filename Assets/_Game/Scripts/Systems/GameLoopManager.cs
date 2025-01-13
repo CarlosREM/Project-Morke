@@ -21,9 +21,9 @@ public class GameLoopManager : MonoBehaviour
     public static LevelManager CurrentLevelManager { get; set; }
     public static int CheckpointIndex { get; set; }
 
-    private PlayerControl _playerRef;
-    private PlayerCameraManager _camRef;
-    private PlayerHudManager _hudRef;
+    public PlayerControl PlayerRef { get; private set; }
+    public PlayerCameraManager CamRef { get; private set; }
+    public PlayerHudManager HudRef { get; private set; }
     
     private void Awake()
     {
@@ -49,37 +49,37 @@ public class GameLoopManager : MonoBehaviour
 
     private IEnumerator PlayerDeathSequenceCoroutine()
     {
-        _playerRef.health.enabled = false; // can no longer be hurt, just in case
-        _camRef.FocusPlayer();
-        _hudRef.PlayerDeathAnim();
+        PlayerRef.health.enabled = false; // can no longer be hurt, just in case
+        CamRef.FocusPlayer();
+        HudRef.PlayerDeathAnim();
         
-        _hudRef.SetWorldCanvasPosition(_playerRef.transform.position);
+        HudRef.SetWorldCanvasPosition(PlayerRef.transform.position);
         
         // dont move player until transition panel is fully active
-        yield return new WaitUntil( ()=> _hudRef.IsCoverOn);
+        yield return new WaitUntil( ()=> HudRef.IsCoverOn);
         
-        _camRef.SetDamping(Vector3.zero); // remove damping so camera remains static when teleporting the player
+        CamRef.SetDamping(Vector3.zero); // remove damping so camera remains static when teleporting the player
         
         yield return null;
         
         // reset player position to the last checkpoint
         var checkpoint = CurrentLevelManager.GetLevelCheckpoint(CheckpointIndex);
-        _playerRef.transform.position = checkpoint.position;
-        _hudRef.SetWorldCanvasPosition(checkpoint.position); // don't let the hud stay behind or the illusion breaks!
+        PlayerRef.transform.position = checkpoint.position;
+        HudRef.SetWorldCanvasPosition(checkpoint.position); // don't let the hud stay behind or the illusion breaks!
         
         // TODO: reset all enemies
         
         // wait til transition panel fades out to return control
-        yield return new WaitUntil( ()=> !_hudRef.IsCoverOn);
+        yield return new WaitUntil( ()=> !HudRef.IsCoverOn);
 
-        _playerRef.GetComponentInChildren<PlayerAnimation>().Reset();
+        PlayerRef.GetComponentInChildren<PlayerAnimation>().Reset();
         
         yield return new WaitForSeconds(1f);
         
-        _playerRef.health.enabled = true;
-        _playerRef.enabled = true; // component disables on death
+        PlayerRef.health.enabled = true;
+        PlayerRef.enabled = true; // component disables on death
         
-        _camRef.ResetFocus();
+        CamRef.ResetFocus();
     }
 
     #region Static Methods
@@ -115,9 +115,9 @@ public class GameLoopManager : MonoBehaviour
         var playerHud = Instantiate(Instance.playerHudPrefab, Vector3.zero, Quaternion.identity);
         playerHud.Initialize(player);
 
-        Instance._playerRef = player;
-        Instance._camRef = playerCamera;
-        Instance._hudRef = playerHud;
+        Instance.PlayerRef = player;
+        Instance.CamRef = playerCamera;
+        Instance.HudRef = playerHud;
     }
     
     public static void ExitGameLoop()

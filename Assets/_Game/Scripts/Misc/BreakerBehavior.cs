@@ -5,6 +5,8 @@ using UnityEngine;
 public class BreakerBehavior : MonoBehaviour
 {
     private InteractableObject _interactableComp;
+    [SerializeField] private FMODUnity.StudioEventEmitter sfx;
+    [SerializeField] private int objectiveIdx;
     
     private void Awake()
     {
@@ -13,7 +15,8 @@ public class BreakerBehavior : MonoBehaviour
 
     public void BreakerEnabled()
     {
-        GameLoopManager.CurrentLevelManager.OnBreakerEnabled();
+        GameLoopManager.CurrentLevelManager.OnBreakerEnabled(objectiveIdx);
+        sfx.Play();
         _interactableComp.enabled = false;
     }
 }
