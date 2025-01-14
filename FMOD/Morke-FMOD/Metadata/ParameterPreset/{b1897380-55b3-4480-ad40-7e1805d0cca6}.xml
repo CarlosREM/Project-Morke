@@ -12,9 +12,6 @@
 		</relationship>
 	</object>
 	<object class="GameParameter" id="{6c8fd5d0-ec74-4fc3-9021-d86c0cbd27a0}">
-		<property name="parameterType">
-			<value>1</value>
-		</property>
 		<property name="minimum">
 			<value>1</value>
 		</property>

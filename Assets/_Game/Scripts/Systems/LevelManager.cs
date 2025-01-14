@@ -51,6 +51,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject livingRoomDoor;
     [SerializeField] private FMODUnity.StudioEventEmitter sfxKnock;
     [SerializeField, EditorScene] private int menuScene;
+    [SerializeField] private TMPro.TextMeshProUGUI dialogueText;
     
     public void OnBreakerEnabled(int index)
     {
@@ -78,18 +79,61 @@ public class LevelManager : MonoBehaviour
         void EndingTransition()
         {
             TransitionManager.onTransitionInComplete -= EndingTransition;
-            StartCoroutine(EndingCoroutine());
+            StartCoroutine(EndingCutscene());
         }
     }
 
-    IEnumerator EndingCoroutine()
+    IEnumerator EndingCutscene()
     {
         yield return null;
         
         sfxKnock.Play();
 
-        yield return new WaitForSeconds(2);
+        yield return ShowText("Papa, are you here...?", 2, 3, 0.1f);
+
+        yield return FadeOutText(1f);
+        
+        yield return ShowText("... Papa...?", 2, 3, 0.2f);
+        
+        yield return FadeOutText(1f);
+
+        yield return new WaitForSeconds(1f);
         
         SceneManager.LoadSceneAsync(menuScene);
+    }
+
+    IEnumerator ShowText(string text, float delayBefore = 0, float delayAfter = 0, float delayPerLetter = 0.2f)
+    {
+        dialogueText.maxVisibleCharacters = 0;
+        dialogueText.text = text;
+        dialogueText.color = Color.white;
+        
+        if (delayBefore > 0)
+            yield return new WaitForSeconds(delayBefore);
+        
+
+        while (dialogueText.maxVisibleCharacters < text.Length)
+        {
+            dialogueText.maxVisibleCharacters++;
+            yield return new WaitForSeconds(delayPerLetter);
+        }
+        
+        if (delayAfter > 0)
+            yield return new WaitForSeconds(delayAfter);
+    }
+
+    IEnumerator FadeOutText(float duration)
+    {
+        float delta = 0;
+        Color textColor = dialogueText.color;
+        while (textColor.a > 0)
+        {
+            textColor.a = Mathf.Lerp(1, 0, delta/duration);
+            dialogueText.color = textColor;
+            
+            yield return null;
+            
+            delta += Time.deltaTime;
+        }
     }
 }

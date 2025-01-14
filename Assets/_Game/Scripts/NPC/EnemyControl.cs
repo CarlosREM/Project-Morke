@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using Unity.Behavior;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnemyControl : MonoBehaviour
 {
@@ -10,6 +12,8 @@ public class EnemyControl : MonoBehaviour
     [Header("Components")] 
     [SerializeField] private Animator animator;
     [SerializeField] private ParticleSystem onHurtParticles;
+    [SerializeField] private FMODUnity.EventReference sfxIdle;
+    [SerializeField] private FMODUnity.StudioEventEmitter sfxHurt, sfxDead, sfxRespawn;
 
     [Header("Parameters")] 
     [SerializeField] private bool canRespawn;
@@ -31,6 +35,7 @@ public class EnemyControl : MonoBehaviour
         if (!_health)
             return;
         
+        _health.OnHurt += OnHurt;
         _health.OnDeath += OnDeath;
         Invoke(nameof(OnSpawn), activateDelay);
     }
@@ -40,6 +45,7 @@ public class EnemyControl : MonoBehaviour
         if (!_health)
             return;
         
+        _health.OnHurt -= OnHurt;
         _health.OnDeath -= OnDeath;
         
         canRespawn = false;
@@ -50,10 +56,18 @@ public class EnemyControl : MonoBehaviour
     {
         _agent.enabled = true;
         _health.IsInvincible = false;
+        //StartCoroutine(IdleNoises());
+    }
+    
+    private void OnHurt(int obj)
+    {
+        sfxHurt.Play();
+        onHurtParticles.Play();
     }
     
     private void OnDeath()
     {
+        sfxDead.Play();
         onHurtParticles.Play();
         animator.SetTrigger("Dead");
         _agent.enabled = false;
@@ -68,6 +82,7 @@ public class EnemyControl : MonoBehaviour
     {
         _health.enabled = true;
         animator.SetTrigger("Reset");
+        sfxRespawn.Play();
         Invoke(nameof(OnSpawn), activateDelay);
     }
 
@@ -80,7 +95,6 @@ public class EnemyControl : MonoBehaviour
             {
                 _health.Hurt(1);
                 _currentLightTime = 0;
-                onHurtParticles.Play();
             }
         }
     }

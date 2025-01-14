@@ -12,14 +12,20 @@ public class PlayerHudManager : MonoBehaviour
 
     [Header("HUD Parameters")] 
     [SerializeField] private RectTransform gameOverlay;
+    
     [SerializeField] private CanvasGroup tutorialHints;
     [SerializeField] private float tutorialDuration;
     [SerializeField] private float tutorialFadeDuration;
                      private float _currentTutorialDuration;
+                     
     [SerializeField] private float speedUpPerMissingHealth = 1.5f;
+    [SerializeField] private FMODUnity.StudioEventEmitter sfxHeart;
+    
     [SerializeField] private Slider batterySlider;
     [SerializeField] private RectTransform batteryRechargeIcon;
+    
     [SerializeField] private TMPro.TextMeshProUGUI[] objectives;
+    
     [SerializeField] private PauseMenuController pauseMenu;
     
     [Header("World Canvas Parameters")]
@@ -104,6 +110,7 @@ public class PlayerHudManager : MonoBehaviour
         animSpeed += speedUpPerMissingHealth * hurtAmount;
         
         _hudAnimator.SetFloat("HP Speed", animSpeed);
+        sfxHeart.Params[0].Value = animSpeed;
     }
     
     private void OnPlayerHeal(int healAmount)
@@ -113,6 +120,7 @@ public class PlayerHudManager : MonoBehaviour
         animSpeed -= speedUpPerMissingHealth * healAmount;
         
         _hudAnimator.SetFloat("HP Speed", animSpeed);
+        sfxHeart.Params[0].Value = animSpeed;
     }
 
     public void EnableObjective(int idx)
@@ -173,10 +181,14 @@ public class PlayerHudManager : MonoBehaviour
         {
             hpParamDelta = Mathf.Lerp(hpParamValue, 1, currentDuration / deathAnimDuration);
             _hudAnimator.SetFloat("HP Speed", hpParamDelta);
+            sfxHeart.Params[0].Value = hpParamDelta;
             currentDuration += Time.deltaTime;
             yield return null;
+            
         } while (currentDuration < deathAnimDuration);
         
+        _hudAnimator.SetFloat("HP Speed", 1);
+        sfxHeart.Params[0].Value = 1;
         
         yield return new WaitForSeconds(postDeathDelay);
         

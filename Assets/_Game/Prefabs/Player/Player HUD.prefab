@@ -129,6 +129,7 @@ MonoBehaviour:
   tutorialDuration: 5
   tutorialFadeDuration: 1
   speedUpPerMissingHealth: 1.5
+  sfxHeart: {fileID: 1714226224172791807}
   batterySlider: {fileID: 2751754439394121241}
   batteryRechargeIcon: {fileID: 6075220859206579833}
   objectives:
@@ -493,7 +494,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 64, y: -64}
+  m_AnchoredPosition: {x: 128, y: -96}
   m_SizeDelta: {x: 0, y: 512}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &7210000063546853280
@@ -514,7 +515,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 32
+  m_Spacing: 48
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -1095,7 +1096,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: '> Knock on papa''s room'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 87d972f3b6ef4444197232d645323a76, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c518d129544f2314393bc198a7372720, type: 2}
   m_sharedMaterial: {fileID: 1294932020584124384, guid: 87d972f3b6ef4444197232d645323a76, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1120,8 +1121,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 58
-  m_fontSizeBase: 58
+  m_fontSize: 64
+  m_fontSizeBase: 64
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1161,7 +1162,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &4937118807494925657
@@ -1231,8 +1232,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: '> Find the Kitchen breaker'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 87d972f3b6ef4444197232d645323a76, type: 2}
-  m_sharedMaterial: {fileID: 1294932020584124384, guid: 87d972f3b6ef4444197232d645323a76, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c518d129544f2314393bc198a7372720, type: 2}
+  m_sharedMaterial: {fileID: 1294932020584124384, guid: c518d129544f2314393bc198a7372720, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1256,8 +1257,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 58
-  m_fontSizeBase: 58
+  m_fontSize: 64
+  m_fontSizeBase: 64
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1404,8 +1405,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: '> Find the Laundry breaker'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 87d972f3b6ef4444197232d645323a76, type: 2}
-  m_sharedMaterial: {fileID: 1294932020584124384, guid: 87d972f3b6ef4444197232d645323a76, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c518d129544f2314393bc198a7372720, type: 2}
+  m_sharedMaterial: {fileID: 1294932020584124384, guid: c518d129544f2314393bc198a7372720, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1429,8 +1430,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 58
-  m_fontSizeBase: 58
+  m_fontSize: 64
+  m_fontSizeBase: 64
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1921,6 +1922,7 @@ GameObject:
   - component: {fileID: 4050640014897761824}
   - component: {fileID: 8747426648484045774}
   - component: {fileID: 7260481894829044118}
+  - component: {fileID: 1714226224172791807}
   m_Layer: 5
   m_Name: HP Container
   m_TagString: Untagged
@@ -2000,6 +2002,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
+--- !u!114 &1714226224172791807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7551010958656453269}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1520036053
+      Data2: 1243184117
+      Data3: 880705187
+      Data4: -1936158325
+    Path: event:/Player/Heart loop
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params:
+  - Name: HP
+    Value: 1
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &7797925458337795981
 GameObject:
   m_ObjectHideFlags: 0

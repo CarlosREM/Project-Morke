@@ -206,7 +206,7 @@ public class PlayerAnimation : MonoBehaviour
     }
     private void OnDeath()
     {
-        _animator.SetTrigger("Dead");
+        //_animator.SetTrigger("Dead");
         SetAnimatorState("Dead", true);
     }
 
