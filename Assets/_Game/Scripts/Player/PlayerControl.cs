@@ -20,6 +20,7 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float jumpForce;
     [SerializeField] private float airMaxVelocity;
     [SerializeField] private float airMinVelocity;
+    [SerializeField, Range(1, 179)] private float lookUpAngle = 90;
     
     public bool IsJumping { get; private set; }
     public bool IsCrouching { get; private set; }
@@ -125,6 +126,16 @@ public class PlayerControl : MonoBehaviour
 
         Gizmos.color = (IsGrounded) ? Color.cyan : Color.red;
         Gizmos.DrawWireCube(groundCheckOrigin, groundCheckBounds.size);
+        
+        // draw look up angle
+        Vector3[] lookUpPoints =
+        {
+            Quaternion.Euler(0, 0, lookUpAngle/2) * (Vector3.up * 6) + flashlightTargetPivot.position,
+            flashlightTargetPivot.position,
+            Quaternion.Euler(0, 0, -lookUpAngle/2) * (Vector3.up * 6) + flashlightTargetPivot.position,
+        };
+        Gizmos.color = Color.white;
+        Gizmos.DrawLineStrip(lookUpPoints, false);
     }
 
     private void Update()
@@ -334,7 +345,9 @@ public class PlayerControl : MonoBehaviour
         }
         flashlightTargetPivot.rotation = Quaternion.Euler(0, 0, rotValue);
 
-        IsLookingUp =  rotValue is > 40 and < 140;
+        float minLookUpAngle = 90 - (lookUpAngle / 2),
+              maxLookUpAngle = 90 + (lookUpAngle / 2);
+        IsLookingUp =  rotValue > minLookUpAngle && rotValue < maxLookUpAngle;
         IsLookingBack = (IsFacingRight) ? rotValue > 90 : rotValue < 90;
         flashlight.SetRotation( (IsFacingRight) ? rotValue : 180 - rotValue);
     }
