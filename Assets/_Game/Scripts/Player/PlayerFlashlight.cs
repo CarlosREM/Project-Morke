@@ -7,8 +7,9 @@ public class PlayerFlashlight : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private GameObject lightObject;
-    
-    [Header("Parameters")]
+
+    [Header("Parameters")] 
+    [SerializeField] private bool DEBUG_decayDisabled;
     [SerializeField, Min(0)] private float timeForFullRecharge;
     [SerializeField, Min(0)] private float energyDecayPerSec;
     
@@ -54,7 +55,7 @@ public class PlayerFlashlight : MonoBehaviour
 
     private void Update()
     {
-        if (IsFlashlightOn)
+        if (IsFlashlightOn && !DEBUG_decayDisabled)
         {
             CurrentEnergy -= energyDecayPerSec * Time.deltaTime;
             
