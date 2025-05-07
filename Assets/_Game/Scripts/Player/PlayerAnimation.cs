@@ -62,10 +62,9 @@ public class PlayerAnimation : MonoBehaviour
     
     private void AnimationStateLoop()
     {
-                switch (_currentState)
+        switch (_currentState)
         {
             case "Idle":
-            {
                 if (AirCheck())
                     break;
                 if (_playerControl.IsCrouching)
@@ -81,9 +80,8 @@ public class PlayerAnimation : MonoBehaviour
                     SetAnimatorState("Recharge");
                 
                 break;
-            }
+            
             case "Move":
-            {
                 if (AirCheck())
                     break;
                 
@@ -100,40 +98,31 @@ public class PlayerAnimation : MonoBehaviour
                     SetAnimatorState("Recharge");
                 
                 break;
-            }
 
             case "Recharge":
-            {
                 if (!_playerControl.flashlight.IsRecharging)
                     SetAnimatorState("Idle");
                 
                 break;
-            }
             
+
             case "Air Up":
-            {
-                AirCheck();
-                break;
-            }
             case "Air Down":
-            {
                 if (AirCheck())
                     break;
                 if (_playerControl.IsGrounded)
                     SetAnimatorState("Idle");
                 break;
-            }
+            
             case "Crouch":
-            {
                 if (!_playerControl.IsCrouching)
                     SetAnimatorState("Idle");
 
                 else if (_playerControl.MoveInput != 0)
                     SetAnimatorState("Crouch Move");
                 break;
-            }
+            
             case "Crouch Move":
-            {
                 if (AirCheck())
                     break;
                 
@@ -147,17 +136,14 @@ public class PlayerAnimation : MonoBehaviour
                     SetAnimatorState("Crouch");
                 
                 break;
-            }
+            
             case "Hurt":
-            {
                 if (_animationDone)
                     SetAnimatorState((_playerControl.IsGrounded) ? "Idle" : "Air Down");
                 break;
-            }
+            
             case "Dead":
-            {
                 break;
-            }
         }
     }
 
@@ -181,7 +167,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private bool AirCheck()
     {
-        if (_playerControl.IsGrounded && Mathf.Approximately(_playerControl.VelocityY, 0))
+        if (_playerControl.IsGrounded)
             return false;
         
         if (_playerControl.VelocityY > 0)

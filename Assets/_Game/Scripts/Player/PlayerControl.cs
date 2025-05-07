@@ -179,16 +179,15 @@ public class PlayerControl : MonoBehaviour
         if (flashlight.IsRecharging)
             return;
         
-        float value = inputData.GetAxis();
+        MoveInput =  inputData.GetAxis();
 
-        float crouchMultiplier = (IsCrouching) ? moveSpeedCrouchMultiplier : 1; 
-        rb.linearVelocityX = value * moveSpeed * crouchMultiplier;
-        MoveInput = value;
+        float crouchMultiplier = (IsCrouching) ? moveSpeedCrouchMultiplier : 1;
+        rb.linearVelocityX = MoveInput * moveSpeed * crouchMultiplier;
 
-        if (value != 0)
+        if (MoveInput != 0)
         {
             bool previousDir = IsFacingRight; 
-            IsFacingRight = value > 0;
+            IsFacingRight = MoveInput > 0;
             if (previousDir != IsFacingRight) // flip flashlight rotation when character rotates
                 flashlight.FlipRotation(IsFacingRight);
         }
@@ -237,7 +236,7 @@ public class PlayerControl : MonoBehaviour
 
         if (IsGrounded && _jumpInputCacheCurrent > 0)
         {
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            rb.linearVelocityY = jumpForce;
             IsJumping = true;
             _jumpInputCacheCurrent = 0;
         }
