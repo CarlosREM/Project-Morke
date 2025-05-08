@@ -177,9 +177,15 @@ public class PlayerControl : MonoBehaviour
     {
         // can't move while recharging
         if (flashlight.IsRecharging)
-            return;
+        {
+            // to prevent sliding when charging
+            MoveInput = 0;
+        }
+        else
+        {
+            MoveInput =  inputData.GetAxis();
+        }
         
-        MoveInput =  inputData.GetAxis();
 
         float crouchMultiplier = (IsCrouching) ? moveSpeedCrouchMultiplier : 1;
         rb.linearVelocityX = MoveInput * moveSpeed * crouchMultiplier;
