@@ -1,9 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using UnityEngine;
 using Rewired;
 using UnityEngine.Assertions;
+using UnityEngine.Serialization;
+using Quaternion = UnityEngine.Quaternion;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerControl : MonoBehaviour
@@ -22,15 +27,31 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float airMinVelocity;
     [SerializeField, Range(1, 179)] private float lookUpAngle = 90;
     
+    private bool JumpIntent
+    { 
+        get => _jumpInputBufferCurrent > 0; 
+        set => _jumpInputBufferCurrent = (value) ? jumpInputBufferDuration : 0; 
+    }
+    private bool _jumpCancel;
+
     public bool IsJumping { get; private set; }
+
     public bool IsCrouching { get; private set; }
     public bool IsLookingUp { get; private set; }
     public bool IsLookingBack { get; private set; }
-    
-    [Header("Ground check")]
-    [SerializeField] private LayerMask groundCheckLayer;
-    [SerializeField, Tooltip("Changing Z does nothing")] private Bounds groundCheckBounds;
+
+    [Header("Ground check")] 
+    [SerializeField] private Vector2 groundCheckOffset;
+    [SerializeField] private Vector2 groundCheckSize;
+    [SerializeField] private ContactFilter2D groundCheckFilter;
     public bool IsGrounded { get; private set; }
+    
+    [SerializeField] private float slopeMaxIncline = 47.5f;
+    public bool IsOnSlope { get; private set; }
+    private Vector2 _slopeNormalPerp;
+
+    [SerializeField] private PhysicsMaterial2D noFrictionPhysMat;
+    [SerializeField] private PhysicsMaterial2D yesFrictionPhysMat;
 
     [Header("Camera Focus")] 
     [SerializeField] private Transform camTargetPlayer;
@@ -46,7 +67,8 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private Transform flashlightTargetPivot;
     [SerializeField] private Collider2D interactionCollider;
     [SerializeField] private Transform flashlightInputTest;
-    public float VelocityY { get; private set; }
+
+    public Vector2 VelocityVector => rb.linearVelocity;
 
     public bool IsFacingRight { get; private set; } = true;
 
@@ -100,7 +122,8 @@ public class PlayerControl : MonoBehaviour
         
         camTargetCursor.gameObject.SetActive(false);
         MoveInput = 0;
-        VelocityY = 0;
+        JumpIntent = false;
+        rb.sharedMaterial = yesFrictionPhysMat;
         
         Debug.Log("[PlayerInput] <color=red>Disabled</color>");
     }
@@ -122,10 +145,10 @@ public class PlayerControl : MonoBehaviour
     private void OnDrawGizmos()
     {
         // ground check
-        Vector2 groundCheckOrigin = transform.position + groundCheckBounds.center;
+        Vector2 groundCheckOrigin = ((Vector2) transform.position) + groundCheckOffset;
 
         Gizmos.color = (IsGrounded) ? Color.cyan : Color.red;
-        Gizmos.DrawWireCube(groundCheckOrigin, groundCheckBounds.size);
+        Gizmos.DrawWireCube(groundCheckOrigin, groundCheckSize);
         
         // draw look up angle
         Vector3[] lookUpPoints =
@@ -152,22 +175,121 @@ public class PlayerControl : MonoBehaviour
             IsCrouching = false;
         }
 
-        VelocityY = Mathf.Clamp(rb.linearVelocityY, airMinVelocity, airMaxVelocity);
-        rb.linearVelocityY = VelocityY;
+        ProcessMovement();
     }
 
+    private List<RaycastHit2D> _groundCheckResults = new();
     private bool GroundCheck()
     {
-        Vector2 groundCheckOrigin = rb.position + (Vector2) groundCheckBounds.center;
-        return Physics2D.BoxCast(groundCheckOrigin, groundCheckBounds.size, 0, Vector2.down, 0, groundCheckLayer);
+        if (IsJumping)
+            return false;
+        
+        Vector2 groundCheckOrigin = rb.position + groundCheckOffset;
+        var hitCount = Physics2D.BoxCast(groundCheckOrigin, groundCheckSize, 0f, Vector2.down, groundCheckFilter,
+            _groundCheckResults, 0);
+        
+        if (hitCount > 0)
+        {
+            float centerDistance = Mathf.Infinity;
+            RaycastHit2D hit = _groundCheckResults[0]; // defaults to first result
+
+            for (int i = 0; i < hitCount && hitCount > 1; ++i)
+            {
+                var distance = Vector2.Distance(groundCheckOrigin, _groundCheckResults[i].point);
+                if (distance > centerDistance)
+                    continue;
+                
+                centerDistance = distance;
+                hit = _groundCheckResults[i];
+            }
+            
+            // Note: for some forsaken reason the dude walks backwards on slopes if the Perp Normal is not inverted
+            _slopeNormalPerp = -Vector2.Perpendicular(hit.normal).normalized;
+            var surfaceAngle = Vector2.Angle(hit.normal, Vector2.up);
+            
+            #if UNITY_EDITOR
+            Debug.DrawRay(hit.point, hit.normal/2, Color.green); // up ray
+            Debug.DrawRay(hit.point, _slopeNormalPerp/2, Color.red); // right ray
+            #endif
+            
+            if (surfaceAngle >= slopeMaxIncline)
+            {
+                IsOnSlope = false;
+                return false;
+            }
+
+            IsOnSlope = surfaceAngle > 0;
+        }
+        else
+            IsOnSlope = false;
+        
+        return hitCount > 0;
     }
 
+    private void ProcessMovement()
+    {
+        // if charging just ignore all movement input
+        if (flashlight.IsRecharging)
+            goto LimitVelocityY;
+        
+        // ground movement
+        if (IsGrounded)
+        {
+            rb.sharedMaterial = (MoveInput == 0) ? yesFrictionPhysMat : noFrictionPhysMat;
+
+            if (MoveInput != 0)
+            {
+                if (IsOnSlope)
+                {
+                    // move according to slope surface (both X and Y, yes)
+                    rb.linearVelocity = MoveInput * moveSpeed * _slopeNormalPerp;
+                }
+                else
+                    rb.linearVelocityX = MoveInput * moveSpeed;
+
+                // limit move speed when crouching
+                if (IsCrouching)
+                    rb.linearVelocity *= moveSpeedCrouchMultiplier;
+            }
+
+            // jump
+            if (IsGrounded && JumpIntent)
+            {
+                rb.linearVelocityY = jumpForce;
+                JumpIntent = false;
+                IsJumping = true;
+                IsGrounded = false;
+            }
+        }
+        // air movement
+        else
+        {
+            rb.sharedMaterial = noFrictionPhysMat; // this is to avoid sticking to surfaces
+            
+            rb.linearVelocityX = MoveInput * moveSpeed;
+            
+            // TODO: when receiving any impulse from other forces, cancel out jump
+            if (IsJumping && _jumpCancel)
+            {
+                rb.linearVelocityY = 0;
+                _jumpCancel = false;
+            }
+            
+            if (IsJumping && rb.linearVelocityY <= 0)
+                IsJumping = false;
+        }
+        
+        LimitVelocityY:
+        // limit Y velocity
+        rb.linearVelocityY = Mathf.Clamp(rb.linearVelocityY, airMinVelocity, airMaxVelocity);
+    }
+    
     #endregion
     
     #region Input Events
     
     [Header("Input parameters")]
-    [SerializeField] private float jumpInputCacheDuration;
+    [SerializeField] private float jumpInputBufferDuration;
     [SerializeField] private bool crouchInputToggle;
     [SerializeField] private bool flashlightInputToggle;
 
@@ -175,21 +297,8 @@ public class PlayerControl : MonoBehaviour
 
     private void InputMove(InputActionEventData inputData)
     {
-        // can't move while recharging
-        if (flashlight.IsRecharging)
-        {
-            // to prevent sliding when charging
-            MoveInput = 0;
-        }
-        else
-        {
-            MoveInput =  inputData.GetAxis();
-        }
+        MoveInput =  inputData.GetAxis();
         
-
-        float crouchMultiplier = (IsCrouching) ? moveSpeedCrouchMultiplier : 1;
-        rb.linearVelocityX = MoveInput * moveSpeed * crouchMultiplier;
-
         if (MoveInput != 0)
         {
             bool previousDir = IsFacingRight; 
@@ -224,7 +333,7 @@ public class PlayerControl : MonoBehaviour
     }
 
 
-    private float _jumpInputCacheCurrent;
+    private float _jumpInputBufferCurrent;
     private void InputJump(InputActionEventData inputData)
     {
         // can't jump while recharging
@@ -233,27 +342,16 @@ public class PlayerControl : MonoBehaviour
         
         if (inputData.GetButtonDown() && !IsCrouching)
         {
-            _jumpInputCacheCurrent = jumpInputCacheDuration;
+            JumpIntent = true;
         }
-        else if (_jumpInputCacheCurrent > 0)
+        else if (JumpIntent)
         {
-            _jumpInputCacheCurrent -= Time.deltaTime;
-        }
-
-        if (IsGrounded && _jumpInputCacheCurrent > 0)
-        {
-            rb.linearVelocityY = jumpForce;
-            IsJumping = true;
-            _jumpInputCacheCurrent = 0;
+            _jumpInputBufferCurrent -= Time.deltaTime;
         }
 
         if (IsJumping && !inputData.GetButton())
         {
-            rb.linearVelocityY = 0;
-        }
-        if (IsJumping && rb.linearVelocityY <= 0)
-        {
-            IsJumping = false;
+            _jumpCancel = true;
         }
     }
 
@@ -278,6 +376,9 @@ public class PlayerControl : MonoBehaviour
 
     private void InputFlashlightMove()
     {
+        if (!flashlight.isActiveAndEnabled)
+            return;
+        
         // first up, check on last device that gave input to flashlight movement
         // to handle it appropriately
         List<Rewired.InputActionSourceData> flashlightInputList = new (_input.GetCurrentInputSources("GP_FlashlightX"));
@@ -372,20 +473,25 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    private bool btnPressedRecharge => btnBufferRecharge > 0;
-    private float btnBufferRecharge = 0;
+    private bool btnPressedRecharge => _rechargeInputBuffer > 0;
+    private float _rechargeInputBuffer = 0;
     private void InputRecharge(InputActionEventData obj)
     {
         if (obj.GetButtonDown())
-            btnBufferRecharge = 0.1f;
+            _rechargeInputBuffer = 0.1f;
         
         else if (!obj.GetButton())
-            btnBufferRecharge -= (btnBufferRecharge > 0) ? Time.deltaTime : 0;
+            _rechargeInputBuffer -= (_rechargeInputBuffer > 0) ? Time.deltaTime : 0;
         
+        // can't recharge in the air
+        if (!IsGrounded)
+            return;
         
         if (btnPressedRecharge && !flashlight.IsRecharging)
+        {
             flashlight.SetRechargeStatus(true);
-        
+            rb.sharedMaterial = yesFrictionPhysMat;
+        }
         else if (!btnPressedRecharge && flashlight.IsRecharging)
             flashlight.SetRechargeStatus(false);
     }

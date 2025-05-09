@@ -646,7 +646,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.4
   m_Color: {r: 1, g: 0.83137256, b: 0.5411765, a: 1}
-  m_Intensity: 0.2
+  m_Intensity: 0.25
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 35542c93000000007fe49bd5
@@ -668,7 +668,7 @@ MonoBehaviour:
     m_Center: {x: 0, y: -0.00000011920929, z: 0}
     m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
   m_PointLightInnerAngle: 10
-  m_PointLightOuterAngle: 60
+  m_PointLightOuterAngle: 70
   m_PointLightInnerRadius: 5
   m_PointLightOuterRadius: 10
   m_ShapeLightParametricSides: 5
@@ -1386,7 +1386,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerRoot: {fileID: 7232854483435194935}
-  minVelocityY: 0.01
 --- !u!1 &6489774268403948141
 GameObject:
   m_ObjectHideFlags: 0
@@ -1483,7 +1482,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 615435197172133667}
-  - component: {fileID: 7544524465258363247}
+  - component: {fileID: 5079138570660613082}
   m_Layer: 0
   m_Name: Normal Collider
   m_TagString: Player
@@ -1506,8 +1505,8 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6026252586330337521}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!70 &7544524465258363247
-CapsuleCollider2D:
+--- !u!61 &5079138570660613082
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1541,8 +1540,17 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 1.375}
-  m_Size: {x: 1, y: 2.75}
-  m_Direction: 0
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.2, y: 2.15}
+  m_EdgeRadius: 0.3
 --- !u!1 &7232854483435194935
 GameObject:
   m_ObjectHideFlags: 0
@@ -1639,7 +1647,7 @@ MonoBehaviour:
   airMinVelocity: -100
   lookUpAngle: 120
   groundCheckOffset: {x: 0, y: 0}
-  groundCheckSize: {x: 0.9, y: 0.1}
+  groundCheckSize: {x: 0.65, y: 0.05}
   groundCheckFilter:
     useTriggers: 0
     useLayerMask: 1
@@ -1654,15 +1662,18 @@ MonoBehaviour:
     maxDepth: 0
     minNormalAngle: 0
     maxNormalAngle: 60
+  slopeMaxIncline: 47.5
+  noFrictionPhysMat: {fileID: 6200000, guid: 4e9e600537ebfe34aa8c7a0981322ef2, type: 2}
+  yesFrictionPhysMat: {fileID: 6200000, guid: ea8adbda14a8dd6459b15c0678c92df4, type: 2}
   camTargetPlayer: {fileID: 8043370959197210521}
   camTargetCursor: {fileID: 3973857483616635682}
-  normalCollider: {fileID: 7544524465258363247}
+  normalCollider: {fileID: 5079138570660613082}
   crouchCollider: {fileID: 6690061363978948333}
   flashlight: {fileID: 4687486338759026242}
   flashlightTargetPivot: {fileID: 6811977842917849207}
   interactionCollider: {fileID: 7287524756988603166}
   flashlightInputTest: {fileID: 8626190059686048284}
-  jumpInputCacheDuration: 0.25
+  jumpInputBufferDuration: 0.25
   crouchInputToggle: 0
   flashlightInputToggle: 1
 --- !u!1 &7372985763112461842

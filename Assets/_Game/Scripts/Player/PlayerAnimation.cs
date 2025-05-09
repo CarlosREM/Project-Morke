@@ -170,13 +170,13 @@ public class PlayerAnimation : MonoBehaviour
         if (_playerControl.IsGrounded)
             return false;
         
-        if (_playerControl.VelocityY > 0)
+        if (_playerControl.VelocityVector.y > 0)
         {
             SetAnimatorState("Air Up");
             return true;
         }
 
-        if (_playerControl.VelocityY < 0)
+        if (_playerControl.VelocityVector.y < 0)
         {
             SetAnimatorState("Air Down");
             return true;
