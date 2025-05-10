@@ -7,13 +7,16 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
+    public static LevelManager Current { get; private set; }
+    
     [SerializeField] private GameLoopManager gameLoopManagerPrefab;
+    [SerializeField] private bool firstSpawnWithoutFlashlight;
      
     [SerializeField] List<Transform> levelCheckpoints;
 
     private IEnumerator Start()
     {
-        GameLoopManager.CurrentLevelManager = this;
+        Current = this;
         if (!GameLoopManager.Instance)
         {
             Instantiate(gameLoopManagerPrefab);
@@ -27,10 +30,16 @@ public class LevelManager : MonoBehaviour
         yield return null;
         
         GameInputManager.ChangeInputMap("Gameplay");
+        Checkpoint.OnCheckpointActivated += OnCheckpointReached;
         
         yield return null;
         
         TransitionManager.TransitionFadeOut();
+    }
+
+    private void OnDestroy()
+    {
+        Current = null;
     }
 
     public Transform GetLevelCheckpoint(int index)
@@ -39,9 +48,11 @@ public class LevelManager : MonoBehaviour
         return levelCheckpoints[index];
     }
 
-    public void OnCheckpointReached(int checkpointIndex)
+    private void OnCheckpointReached(Checkpoint checkpoint)
     {
-        GameLoopManager.CheckpointIndex = checkpointIndex;
+        int i = levelCheckpoints.IndexOf(checkpoint.transform);
+        Assert.IsTrue(i >= 0, "Invalid checkpoint, needs to be added to Checkpoint list first"); 
+        GameLoopManager.CheckpointIndex = i;
     }
     
     [Header("(Placeholder) Win Conditions")]
@@ -73,6 +84,8 @@ public class LevelManager : MonoBehaviour
     public void EndLevel()
     {
         GameLoopManager.Instance.PlayerRef.enabled = false;
+        Checkpoint.OnCheckpointActivated -= OnCheckpointReached;
+
         TransitionManager.onTransitionInComplete += EndingTransition;
         TransitionManager.TransitionFadeIn();
 

@@ -48,6 +48,12 @@ MonoBehaviour:
   gameLoopManagerPrefab: {fileID: 9031562582060516338, guid: 817bf255f42fbde4ea0770b93c8c64af, type: 3}
   levelCheckpoints:
   - {fileID: 2643188692254936698}
+  totalBreakers: 2
+  livingRoomLight: {fileID: 0}
+  livingRoomDoor: {fileID: 0}
+  sfxKnock: {fileID: 0}
+  menuScene: 0
+  dialogueText: {fileID: 0}
 --- !u!1 &5157927250725423194
 GameObject:
   m_ObjectHideFlags: 0
@@ -58,7 +64,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2643188692254936698}
   m_Layer: 0
-  m_Name: Test Checkpoint
+  m_Name: First Checkpoint
   m_TagString: Untagged
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0

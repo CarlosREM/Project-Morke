@@ -15,7 +15,7 @@ public class BreakerBehavior : MonoBehaviour
 
     public void BreakerEnabled()
     {
-        GameLoopManager.CurrentLevelManager.OnBreakerEnabled(objectiveIdx);
+        LevelManager.Current.OnBreakerEnabled(objectiveIdx);
         sfx.Play();
         _interactableComp.enabled = false;
     }

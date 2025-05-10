@@ -142,7 +142,7 @@ public class PlayerControl : MonoBehaviour
     
     #region Update Loop
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         // ground check
         Vector2 groundCheckOrigin = ((Vector2) transform.position) + groundCheckOffset;
