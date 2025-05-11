@@ -6,6 +6,7 @@ using UnityEngine.Assertions;
 public class PlayerAnimation : MonoBehaviour
 {
     [SerializeField] GameObject playerRoot;
+    [SerializeField] SpriteRenderer playerBody;
 
     private PlayerControl _playerControl;
     private CharacterHealth _playerHealth;
@@ -194,11 +195,14 @@ public class PlayerAnimation : MonoBehaviour
     {
         //_animator.SetTrigger("Dead");
         SetAnimatorState("Dead", true);
+        playerBody.sortingLayerName = "PlayerDead";
     }
 
     public void Reset()
     {
         _animator.SetTrigger("Reset");
         SetAnimatorState("Idle", true);
+        
+        playerBody.sortingLayerName = "Player";
     }
 }
