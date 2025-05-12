@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7c502dd5c6455f64086755a010bd7adc
+guid: d1c43cc8e4182504da1057471e6979d7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5901683831408368656
-    second: repisa_0
+      213: 181184179721847134
+    second: tile pared sala_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +46,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 512
+  spritePixelsToUnits: 256
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -72,7 +72,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Platform_Shelf_1
+      name: tile pared sala_0
       rect:
         serializedVersion: 2
-        x: 4
-        y: 24
-        width: 3556
-        height: 377
-      alignment: 2
-      pivot: {x: 0.5, y: 1}
-      border: {x: 0, y: 0, z: 0, w: 128}
+        x: 0
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0f3ec34e2d1091ea0800000000000000
-      internalID: -5901683831408368656
+      spriteID: e51cd3f2d02b38200800000000000000
+      internalID: 181184179721847134
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: fd44f0f27cda69040aaf548e10ec651d
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Platform_Shelf_1: -5901683831408368656
+      tile pared sala_0: 181184179721847134
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

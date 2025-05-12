@@ -7,6 +7,13 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
+    [Serializable]
+    public struct LevelObjective
+    {
+        public string objective;
+        public int maxProgress;
+    }
+    
     public static LevelManager Current { get; private set; }
     
     [SerializeField] private GameLoopManager gameLoopManagerPrefab;
@@ -15,6 +22,9 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private bool startWithCinematic;
      
     [SerializeField] List<Transform> levelCheckpoints;
+
+    [SerializeField] private List<LevelObjective> levelObjectives;
+    
 
     private IEnumerator Start()
     {
@@ -74,6 +84,23 @@ public class LevelManager : MonoBehaviour
         Assert.IsTrue(i >= 0, "Invalid checkpoint, needs to be added to Checkpoint list first"); 
         GameLoopManager.CheckpointIndex = i;
     }
+
+    #region Inventory
+    
+    private List<string> _currentInventory;
+
+    public void AddToInventory(string item)
+    {
+        Assert.IsTrue(!HasItemInInventory(item), "Invalid item, already in inventory");
+        _currentInventory.Add(item);
+    }
+
+    public bool HasItemInInventory(string item)
+    {
+        return _currentInventory.Contains(item);
+    }
+    
+    #endregion
     
     #region REMOVE THIS
     

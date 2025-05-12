@@ -62,6 +62,11 @@ public class InteractableObject : MonoBehaviour
         GameLoopManager.Instance.PlayerRef.FlashlightActive = newStatus;
     }
 
+    public void AddToInventory(string item)
+    {
+        LevelManager.Current.AddToInventory(item);
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag(this.tag))
