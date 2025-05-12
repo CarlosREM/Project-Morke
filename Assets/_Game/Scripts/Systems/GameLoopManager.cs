@@ -36,13 +36,10 @@ public class GameLoopManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    private void Start()
-    {
-        InitializeLevel();
-    }
-
     private void OnPlayerDeath()
     {
+        Debug.Log("<color=white>[Game Loop Manager]</color> <color=green>Playing death sequence...</color>", this);
+
         StartCoroutine(PlayerDeathSequenceCoroutine());
     }
 
@@ -71,7 +68,7 @@ public class GameLoopManager : MonoBehaviour
         // wait til transition panel fades out to return control
         yield return new WaitUntil( ()=> !HudRef.IsCoverOn);
 
-        PlayerRef.GetComponentInChildren<PlayerAnimation>().Reset();
+        PlayerRef.PlayerAnim.Reset();
         
         yield return new WaitForSeconds(1f);
         
@@ -117,6 +114,8 @@ public class GameLoopManager : MonoBehaviour
         Instance.PlayerRef = player;
         Instance.CamRef = playerCamera;
         Instance.HudRef = playerHud;
+        
+        Debug.Log("<color=white>[Game Loop Manager]</color> <color=green>Level Initialized</color>", Instance);
     }
     
     public static void ExitGameLoop()
@@ -128,6 +127,8 @@ public class GameLoopManager : MonoBehaviour
         
         void OnTransitionInComplete()
         {
+            Debug.Log("<color=white>[Game Loop Manager]</color> <color=yellow>Exiting game loop...</color>", Instance);
+
             TransitionManager.onTransitionInComplete -= OnTransitionInComplete;
 
             SceneManager.LoadSceneAsync("MainMenu"); // 1 should be main menu

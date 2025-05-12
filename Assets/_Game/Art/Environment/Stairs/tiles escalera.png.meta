@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b128e67de72361e4f9f8da6349e88b8c
+guid: 4baac421756eb1c419e6d4cd44ab19da
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 78798305077476428
-    second: tiles escalera_0
+      213: -7507876015763943776
+    second: tiles escalera 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: tiles escalera_0
+      name: tiles escalera 1_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 254
-        height: 244
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c4cbb0714a2f71100800000000000000
-      internalID: 78798305077476428
+      spriteID: 0ae07b6ca8aaec790800000000000000
+      internalID: -7507876015763943776
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      tiles escalera_0: 78798305077476428
+      tiles escalera 1_0: -7507876015763943776
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

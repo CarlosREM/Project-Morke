@@ -10,31 +10,51 @@ public class LevelManager : MonoBehaviour
     public static LevelManager Current { get; private set; }
     
     [SerializeField] private GameLoopManager gameLoopManagerPrefab;
-    [SerializeField] private bool firstSpawnWithoutFlashlight;
+    [SerializeField] private CinematicsManager levelCinematics;
+    [field: SerializeField] public bool firstSpawnWithoutFlashlight { get; private set; }
+    [SerializeField] private bool startWithCinematic;
      
     [SerializeField] List<Transform> levelCheckpoints;
 
     private IEnumerator Start()
     {
+        Debug.Log("<color=white>[Level Manager]</color> <color=yellow>Level Setup starting...</color>", this);
+        
         Current = this;
         if (!GameLoopManager.Instance)
         {
             Instantiate(gameLoopManagerPrefab);
             // initialize is called on game loop manager start
         }
-        else
-        {
-            GameLoopManager.InitializeLevel();
-        }
         
+        yield return null;
+        
+        GameLoopManager.InitializeLevel();
+
         yield return null;
         
         GameInputManager.ChangeInputMap("Gameplay");
         Checkpoint.OnCheckpointActivated += OnCheckpointReached;
         
+        if (firstSpawnWithoutFlashlight)
+        {
+            GameLoopManager.Instance.PlayerRef.FlashlightActive = false;
+        }
+        
         yield return null;
         
         TransitionManager.TransitionFadeOut();
+
+        Debug.Log("<color=white>[Level Manager]</color> <color=green>Setup Complete, Level starting</color>", this);
+        
+        if (startWithCinematic)
+        {
+            GameLoopManager.Instance.PlayerRef.SetActive(false);
+            levelCinematics.PlayCinematic(0);
+            yield return new WaitUntil(() => !CinematicsManager.IsPlayingCinematic);
+            GameLoopManager.Instance.PlayerRef.SetActive(true);
+        }
+        
     }
 
     private void OnDestroy()
@@ -54,6 +74,8 @@ public class LevelManager : MonoBehaviour
         Assert.IsTrue(i >= 0, "Invalid checkpoint, needs to be added to Checkpoint list first"); 
         GameLoopManager.CheckpointIndex = i;
     }
+    
+    #region REMOVE THIS
     
     [Header("(Placeholder) Win Conditions")]
     [SerializeField] private int totalBreakers = 2;
@@ -149,4 +171,6 @@ public class LevelManager : MonoBehaviour
             delta += Time.deltaTime;
         }
     }
+    
+    #endregion
 }

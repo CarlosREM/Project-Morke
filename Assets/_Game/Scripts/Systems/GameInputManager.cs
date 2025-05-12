@@ -25,20 +25,20 @@ public class GameInputManager : MonoBehaviour
         ReInput.ControllerConnectedEvent += OnControllerConnected;
         ReInput.ControllerPreDisconnectEvent += OnControllerPreDisconnect;
         
-        Debug.Log("[Game Input Manager] <color=green>Ready</color>");
+        Debug.Log("<color=white>[Game Input Manager]</color> <color=green>Ready</color>", this);
     }
 
     private void OnControllerConnected(ControllerStatusChangedEventArgs obj)
     {
         ReInput.controllers.RemoveControllerFromAllPlayers(obj.controller);
         MainPlayer.controllers.AddController(obj.controller, true);
-        Debug.Log($"Controller \"{obj.controller.name}\" was connected and assigned to System player");
+        Debug.Log($"Controller \"{obj.controller.name}\" was connected and assigned to System player", this);
     }
 
     private void OnControllerPreDisconnect(ControllerStatusChangedEventArgs obj)
     {
         ReInput.controllers.RemoveControllerFromAllPlayers(obj.controller);
-        Debug.Log($"Controller \"{obj.controller.name}\" has disconnected");
+        Debug.Log($"Controller \"{obj.controller.name}\" has disconnected", this);
     }
 
     public static void ChangeInputMap(string mapName)
@@ -59,7 +59,7 @@ public class GameInputManager : MonoBehaviour
 
         if (System.Array.FindIndex(mapNames, item => item == mapName) < 0)
         {
-            Debug.LogError($"ChangePlayerMap: No map by name {mapName}");
+            Debug.LogError($"ChangePlayerMap: No map by name {mapName}", Instance);
             return;
         }
 

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: Tile_Stairs
+  m_Name: tiles escalera
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300000, guid: b128e67de72361e4f9f8da6349e88b8c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4baac421756eb1c419e6d4cd44ab19da, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1

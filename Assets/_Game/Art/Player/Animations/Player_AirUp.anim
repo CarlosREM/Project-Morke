@@ -30,7 +30,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: Arm
+    path: Arm Flashlight
   m_ScaleCurves: []
   m_FloatCurves:
   - serializedVersion: 2
@@ -64,6 +64,15 @@ AnimationClip:
     classID: 212
     script: {fileID: 0}
     flags: 2
+  - serializedVersion: 2
+    curve:
+    - time: 0
+      value: {fileID: -575704377991774509, guid: f66bc982129ddba40a4dd9e6e2183b13, type: 3}
+    attribute: m_Sprite
+    path: Arm Empty
+    classID: 212
+    script: {fileID: 0}
+    flags: 2
   m_SampleRate: 24
   m_WrapMode: 0
   m_Bounds:
@@ -90,7 +99,16 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 2685614196
+      path: 1132222665
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
+    - serializedVersion: 2
+      path: 1181289895
       attribute: 1
       script: {fileID: 0}
       typeID: 4
@@ -100,6 +118,7 @@ AnimationClip:
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
     - {fileID: 4433097409685088509, guid: 8398223ae38a9aa40b21e77751da5782, type: 3}
+    - {fileID: -575704377991774509, guid: f66bc982129ddba40a4dd9e6e2183b13, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
@@ -159,7 +178,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.x
-    path: Arm
+    path: Arm Flashlight
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -180,7 +199,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.y
-    path: Arm
+    path: Arm Flashlight
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -201,7 +220,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.z
-    path: Arm
+    path: Arm Flashlight
     classID: 4
     script: {fileID: 0}
     flags: 0

@@ -33,7 +33,7 @@ public class PlayerHudManager : MonoBehaviour
     [SerializeField] private float deathAnimDuration = 2f;
     [SerializeField] private float postDeathDelay = 1f;
 
-    
+    public static bool CanPause { get; set; }
     public bool IsCoverOn { get; private set; }
 
     #region Initialization
@@ -53,6 +53,8 @@ public class PlayerHudManager : MonoBehaviour
         playerRef.health.OnHeal += OnPlayerHeal;
         
         _hudAnimator.SetFloat("HP Speed", 1);
+        
+        Debug.Log("<color=white>[Player HUD Manager]</color> <color=green>Ready</color>", this);
     }
 
     private void OnDisable()
@@ -62,11 +64,13 @@ public class PlayerHudManager : MonoBehaviour
         
         playerRef.health.OnHurt -= OnPlayerHurt;
         playerRef.health.OnHeal -= OnPlayerHeal;
+        
+        Debug.Log("<color=white>[Game Input Manager]</color> <color=red>Disabled</color>", this);
     }
 
     private void Update()
     {
-        float energy = playerRef.flashlight.CurrentEnergy;
+        float energy = playerRef.Flashlight.CurrentEnergy;
         if (energy > 80)
             batterySlider.value = 3;
         else if (energy > 40)
@@ -76,8 +80,8 @@ public class PlayerHudManager : MonoBehaviour
         else
             batterySlider.value = 0;
 
-        if (playerRef.flashlight.IsRecharging != batteryRechargeIcon.gameObject.activeSelf)
-            batteryRechargeIcon.gameObject.SetActive(playerRef.flashlight.IsRecharging);
+        if (playerRef.Flashlight.IsRecharging != batteryRechargeIcon.gameObject.activeSelf)
+            batteryRechargeIcon.gameObject.SetActive(playerRef.Flashlight.IsRecharging);
         
         // tutorial fade out
         if (_currentTutorialDuration < tutorialDuration + tutorialFadeDuration)
@@ -136,6 +140,9 @@ public class PlayerHudManager : MonoBehaviour
     
     public void ShowPauseMenu()
     {
+        if (!CanPause)
+            return;
+        
         playerRef.enabled = false;
         gameOverlay.gameObject.SetActive(false);
         pauseMenu.gameObject.SetActive(true);

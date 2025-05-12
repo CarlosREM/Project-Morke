@@ -23,6 +23,7 @@ public class TransitionManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
         
         _transitionAnimator = GetComponent<Animator>();
+        Debug.Log("<color=white>[Transition Manager]</color> <color=green>Ready</color>", this);
     }
 
     private void TransitionInComplete()
@@ -32,6 +33,7 @@ public class TransitionManager : MonoBehaviour
 
     private void TransitionOutComplete()
     {
+        PlayerHudManager.CanPause = true;
         onTransitionOutComplete?.Invoke();
     }
     
@@ -42,6 +44,7 @@ public class TransitionManager : MonoBehaviour
         
         Instance._transitionAnimator.SetBool("Fade", true);
         Instance._transitionAnimator.SetTrigger("Transition");
+        PlayerHudManager.CanPause = false;
     }
     
     public static void TransitionFadeOut()

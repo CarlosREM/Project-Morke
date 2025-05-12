@@ -6,7 +6,7 @@ using UnityEngine.Assertions;
 public class PlayerAnimation : MonoBehaviour
 {
     [SerializeField] GameObject playerRoot;
-    [SerializeField] SpriteRenderer playerBody;
+    [SerializeField] SpriteRenderer playerBody, playerArmFlashlight, playerArmEmpty;
 
     private PlayerControl _playerControl;
     private CharacterHealth _playerHealth;
@@ -77,7 +77,7 @@ public class PlayerAnimation : MonoBehaviour
                 if (_playerControl.MoveInput != 0)
                     SetAnimatorState("Move");
 
-                if (_playerControl.flashlight.IsRecharging)
+                if (_playerControl.Flashlight.IsRecharging)
                     SetAnimatorState("Recharge");
                 
                 break;
@@ -95,13 +95,13 @@ public class PlayerAnimation : MonoBehaviour
                 if (_playerControl.MoveInput == 0)
                     SetAnimatorState("Idle");
                 
-                if (_playerControl.flashlight.IsRecharging)
+                if (_playerControl.Flashlight.IsRecharging)
                     SetAnimatorState("Recharge");
                 
                 break;
 
             case "Recharge":
-                if (!_playerControl.flashlight.IsRecharging)
+                if (!_playerControl.Flashlight.IsRecharging)
                     SetAnimatorState("Idle");
                 
                 break;
@@ -204,5 +204,11 @@ public class PlayerAnimation : MonoBehaviour
         SetAnimatorState("Idle", true);
         
         playerBody.sortingLayerName = "Player";
+    }
+
+    public void UpdateFlashlightStatus(bool value)
+    {
+        playerArmFlashlight.SetActive(value);
+        playerArmEmpty.SetActive(!value);
     }
 }

@@ -58,21 +58,35 @@ public class PlayerControl : MonoBehaviour
     public Transform CamTargetPlayer => camTargetPlayer;
     [SerializeField] private Transform camTargetCursor;
     public Transform CamTargetCursor => camTargetCursor;
+    [SerializeField] private Transform cursorNoCam;
 
+    [Header("Flashlight")]
+    [SerializeField] private Transform flashlightTargetPivot;
+    [field: SerializeField] public PlayerFlashlight Flashlight { get; private set; }
+    [SerializeField] private Transform flashlightInputTest;
     
+    public bool FlashlightActive { 
+        get => Flashlight.gameObject.activeSelf;
+        set
+        {
+            Flashlight.SetActive(value);
+            CamTargetCursor.SetActive(value);
+            cursorNoCam.SetActive(!value);
+            PlayerAnim.UpdateFlashlightStatus(value);
+        }
+    }
+
     [Header("Additional Components")]
+    [field: SerializeField] public PlayerAnimation PlayerAnim { get; private set; }
     [SerializeField] private Collider2D normalCollider;
     [SerializeField] private Collider2D crouchCollider;
-    public PlayerFlashlight flashlight;
-    [SerializeField] private Transform flashlightTargetPivot;
     [SerializeField] private Collider2D interactionCollider;
-    [SerializeField] private Transform flashlightInputTest;
-
+    [field: SerializeField] public PlayerDialogue PlayerDialogue { get; private set; }
+    
     public Vector2 VelocityVector => rb.linearVelocity;
 
     public bool IsFacingRight { get; private set; } = true;
-
-    private Rewired.ControllerType _lastCursorInput;
+    
     
     #region Initialization
     
@@ -94,15 +108,17 @@ public class PlayerControl : MonoBehaviour
         _input.AddInputEventDelegate(InputFlashlight, UpdateLoopType.Update, InputActionEventType.Update, "GP_Flashlight");
         _input.AddInputEventDelegate(InputInteract, UpdateLoopType.Update, InputActionEventType.ButtonJustPressed, "GP_Interact");
         _input.AddInputEventDelegate(InputRecharge, UpdateLoopType.Update, InputActionEventType.Update, "GP_Reload");
+        
         _input.AddInputEventDelegate(InputPause, UpdateLoopType.Update, InputActionEventType.ButtonJustPressed, "GP_Pause");
 
         health.OnDeath += OnDeath;
-        
-        camTargetCursor.gameObject.SetActive(true);
-        flashlight.enabled = true;
+
+        // this works, in a way, trust me
+        FlashlightActive = FlashlightActive;
+
         rb.bodyType = RigidbodyType2D.Dynamic;
         
-        Debug.Log("[PlayerInput] <color=green>Ready</color>");
+        Debug.Log("<color=white>[PlayerInput]</color> <color=green>Ready</color>");
     }
 
     private void OnDisable()
@@ -116,7 +132,9 @@ public class PlayerControl : MonoBehaviour
         _input.RemoveInputEventDelegate(InputFlashlight, UpdateLoopType.Update, InputActionEventType.Update, "GP_Flashlight");
         _input.RemoveInputEventDelegate(InputInteract, UpdateLoopType.Update, InputActionEventType.ButtonJustPressed, "GP_Interact");
         _input.RemoveInputEventDelegate(InputRecharge, UpdateLoopType.Update, InputActionEventType.Update, "GP_Reload");
-        _input.RemoveInputEventDelegate(InputPause, UpdateLoopType.Update, InputActionEventType.ButtonJustPressed, "GP_Pause");
+        
+        // only remove pause binding when destroying the player
+        //_input.RemoveInputEventDelegate(InputPause, UpdateLoopType.Update, InputActionEventType.ButtonJustPressed, "GP_Pause");
         
         health.OnDeath -= OnDeath;
         
@@ -125,19 +143,24 @@ public class PlayerControl : MonoBehaviour
         JumpIntent = false;
         rb.sharedMaterial = yesFrictionPhysMat;
         
-        Debug.Log("[PlayerInput] <color=red>Disabled</color>");
+        Debug.Log("<color=white>[PlayerInput]</color> <color=red>Disabled</color>");
     }
 
     private void OnDeath()
     {
         IsLookingUp = false;
         IsLookingBack = false;
-        flashlight.enabled = false;
+        Flashlight.enabled = false;
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.linearVelocity = Vector2.zero;
         this.enabled = false;
     }
-    
+
+    private void OnDestroy()
+    {
+        _input.RemoveInputEventDelegate(InputPause, UpdateLoopType.Update, InputActionEventType.ButtonJustPressed, "GP_Pause");
+    }
+
     #endregion
     
     #region Update Loop
@@ -229,7 +252,7 @@ public class PlayerControl : MonoBehaviour
     private void ProcessMovement()
     {
         // if charging just ignore all movement input
-        if (flashlight.IsRecharging)
+        if (Flashlight.IsRecharging)
             goto LimitVelocityY;
         
         // ground movement
@@ -293,6 +316,8 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private bool crouchInputToggle;
     [SerializeField] private bool flashlightInputToggle;
 
+    private Rewired.ControllerType _lastCursorInput;
+
     public float MoveInput { get; private set; }
 
     private void InputMove(InputActionEventData inputData)
@@ -304,14 +329,14 @@ public class PlayerControl : MonoBehaviour
             bool previousDir = IsFacingRight; 
             IsFacingRight = MoveInput > 0;
             if (previousDir != IsFacingRight) // flip flashlight rotation when character rotates
-                flashlight.FlipRotation(IsFacingRight);
+                Flashlight.FlipRotation(IsFacingRight);
         }
     }
     
     private void InputCrouch(InputActionEventData inputData)
     {
         // can't crouch while recharging
-        if (flashlight.IsRecharging)
+        if (Flashlight.IsRecharging)
             return;
         
         bool previousCrouch = IsCrouching;
@@ -337,7 +362,7 @@ public class PlayerControl : MonoBehaviour
     private void InputJump(InputActionEventData inputData)
     {
         // can't jump while recharging
-        if (flashlight.IsRecharging)
+        if (Flashlight.IsRecharging)
             return;
         
         if (inputData.GetButtonDown() && !IsCrouching)
@@ -357,28 +382,25 @@ public class PlayerControl : MonoBehaviour
 
     private void InputFlashlight(InputActionEventData inputData)
     {
-        if (flashlight.IsRecharging)
+        if (Flashlight.IsRecharging || !Flashlight.isActiveAndEnabled)
             return;
         
         if (flashlightInputToggle)
         {
             if (inputData.GetButtonDown())
-                flashlight.ToggleFlashlight();
+                Flashlight.ToggleFlashlight();
         }
         else
         {
             if (inputData.GetButtonDown())
-                flashlight.TurnOn();
+                Flashlight.TurnOn();
             else if (inputData.GetButtonUp())
-                flashlight.TurnOff();
+                Flashlight.TurnOff();
         }
     }
 
     private void InputFlashlightMove()
     {
-        if (!flashlight.isActiveAndEnabled)
-            return;
-        
         // first up, check on last device that gave input to flashlight movement
         // to handle it appropriately
         List<Rewired.InputActionSourceData> flashlightInputList = new (_input.GetCurrentInputSources("GP_FlashlightX"));
@@ -455,7 +477,7 @@ public class PlayerControl : MonoBehaviour
               maxLookUpAngle = 90 + (lookUpAngle / 2);
         IsLookingUp =  rotValue > minLookUpAngle && rotValue < maxLookUpAngle;
         IsLookingBack = (IsFacingRight) ? rotValue > 90 : rotValue < 90;
-        flashlight.SetRotation( (IsFacingRight) ? rotValue : 180 - rotValue);
+        Flashlight.SetRotation( (IsFacingRight) ? rotValue : 180 - rotValue);
     }
 
     private void InputInteract(InputActionEventData inputData)
@@ -487,13 +509,13 @@ public class PlayerControl : MonoBehaviour
         if (!IsGrounded)
             return;
         
-        if (btnPressedRecharge && !flashlight.IsRecharging)
+        if (btnPressedRecharge && !Flashlight.IsRecharging)
         {
-            flashlight.SetRechargeStatus(true);
+            Flashlight.SetRechargeStatus(true);
             rb.sharedMaterial = yesFrictionPhysMat;
         }
-        else if (!btnPressedRecharge && flashlight.IsRecharging)
-            flashlight.SetRechargeStatus(false);
+        else if (!btnPressedRecharge && Flashlight.IsRecharging)
+            Flashlight.SetRechargeStatus(false);
     }
 
     private void InputPause(InputActionEventData obj)
