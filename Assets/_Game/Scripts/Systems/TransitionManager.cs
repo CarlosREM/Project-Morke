@@ -8,8 +8,8 @@ public class TransitionManager : MonoBehaviour
 
     public static TransitionManager Instance { get; private set; }
 
-    public static Action onTransitionInComplete;
-    public static Action onTransitionOutComplete;
+    public static event Action OnTransitionInComplete;
+    public static event Action OnTransitionOutComplete;
     
     private void Awake()
     {
@@ -28,13 +28,13 @@ public class TransitionManager : MonoBehaviour
 
     private void TransitionInComplete()
     {
-        onTransitionInComplete?.Invoke();
+        OnTransitionInComplete?.Invoke();
     }
 
     private void TransitionOutComplete()
     {
         PlayerHudManager.CanPause = true;
-        onTransitionOutComplete?.Invoke();
+        OnTransitionOutComplete?.Invoke();
     }
     
     public static void TransitionFadeIn()

@@ -34,14 +34,14 @@ public class InteractableObject : MonoBehaviour
         }
     }
 
-    public void Interact(GameObject source)
+    public virtual void Interact(GameObject source)
     {
         if (enabled)
         {
             onInteracted?.Invoke();
 
             if (disableAfterInteracted)
-                enabled = false;
+                gameObject.SetActive(false);
             
             else if (delayAfterInteracted > 0)
             {
@@ -50,21 +50,6 @@ public class InteractableObject : MonoBehaviour
                 onExitRange?.Invoke();
             }
         }
-    }
-
-    public void PlayerDialogue(string dialogue)
-    {
-        GameLoopManager.Instance.PlayerRef.PlayerDialogue.SetDialogue(dialogue, 3f);
-    }
-
-    public void SetPlayerFlashlightStatus(bool newStatus)
-    {
-        GameLoopManager.Instance.PlayerRef.FlashlightActive = newStatus;
-    }
-
-    public void AddToInventory(string item)
-    {
-        LevelManager.Current.AddToInventory(item);
     }
 
     private void OnTriggerEnter2D(Collider2D other)

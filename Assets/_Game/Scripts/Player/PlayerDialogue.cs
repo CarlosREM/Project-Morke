@@ -28,7 +28,7 @@ public class PlayerDialogue : MonoBehaviour
         }
     }
     
-    public void SetDialogue(string dialogue, float duration = 5f) 
+    public void SetDialogue(string dialogue, float duration = 2.5f) 
     {
         dialogueText.text = dialogue;
         dialogueText.alpha = 1;

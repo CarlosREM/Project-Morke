@@ -13,11 +13,11 @@ public class NextSceneUtility : MonoBehaviour
         yield return new WaitForSecondsRealtime(delay);
         
         TransitionManager.TransitionFadeIn();
-        TransitionManager.onTransitionInComplete += LoadAfterTransition;
+        TransitionManager.OnTransitionInComplete += LoadAfterTransition;
         
         void LoadAfterTransition()
         {
-            TransitionManager.onTransitionInComplete -= LoadAfterTransition;
+            TransitionManager.OnTransitionInComplete -= LoadAfterTransition;
             SceneManager.LoadScene(nextScene);
         }
     }

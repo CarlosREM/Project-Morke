@@ -2,11 +2,19 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Events;
 using UnityEngine.Playables;
 
 public class CinematicsManager : MonoBehaviour
 {
-    [SerializeField] private PlayableDirector[] cinematicList;
+    [Serializable]
+    public struct GameCinematic
+    {
+        public PlayableDirector cinematicSequence;
+        public UnityEvent onCinematicEnd;
+    }
+    
+    [SerializeField] private GameCinematic[] cinematicList;
 
     public static bool IsPlayingCinematic { get; private set; }
 
@@ -17,22 +25,24 @@ public class CinematicsManager : MonoBehaviour
     {
         Assert.IsTrue(index.IsInRange(0, cinematicList.Length-1), "Invalid Cinematic index");
         
-        cinematicList[index].SetActive(true);
-        cinematicList[index].Play();
+        cinematicList[index].cinematicSequence.SetActive(true); // it should play once its active
         
         IsPlayingCinematic = true;
+        cinematicList[index].cinematicSequence.Play();
         OnCinematicPlay?.Invoke();
         StartCoroutine(CinematicCoroutine(cinematicList[index]));
     }
 
-    private IEnumerator CinematicCoroutine(PlayableDirector currentCinematic)
+    private IEnumerator CinematicCoroutine(GameCinematic currentCinematic)
     {
-        while (currentCinematic.duration - currentCinematic.time > 0.005)
+        var cinematic = currentCinematic.cinematicSequence;
+        while (cinematic.duration - cinematic.time > 0.01)
             yield return null;
         
-        currentCinematic.Stop();
-        currentCinematic.SetActive(false);
+        cinematic.Stop();
+        cinematic.SetActive(false);
         IsPlayingCinematic = false;
         OnCinematicStop?.Invoke();
+        currentCinematic.onCinematicEnd?.Invoke();
     }
 }

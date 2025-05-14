@@ -6,6 +6,11 @@ public static class ObjectExtensions
     {
         component.gameObject.SetActive(isActive);
     }
+    
+    public static bool IsActive(this Component component)
+    {
+        return component.gameObject.activeSelf;
+    }
 
     public static bool IsInRange(this int value, int min, int max)
     {

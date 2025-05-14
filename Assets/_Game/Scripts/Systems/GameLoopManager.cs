@@ -100,6 +100,7 @@ public class GameLoopManager : MonoBehaviour
         // a level manager is REQUIRED in every playable level
         Assert.IsNotNull(LevelManager.Current, "Level Manager instance hasn't been initialized.");
 
+        CheckpointIndex = 0; // TODO: remove this later
         var checkpoint = LevelManager.Current.GetLevelCheckpoint(CheckpointIndex);
         
         var player = Instantiate(Instance.playerPrefab, checkpoint.transform.position, Quaternion.identity);
@@ -120,7 +121,7 @@ public class GameLoopManager : MonoBehaviour
     
     public static void ExitGameLoop()
     {
-        TransitionManager.onTransitionInComplete += OnTransitionInComplete;
+        TransitionManager.OnTransitionInComplete += OnTransitionInComplete;
 
         TransitionManager.TransitionFadeIn();
         
@@ -129,7 +130,7 @@ public class GameLoopManager : MonoBehaviour
         {
             Debug.Log("<color=white>[Game Loop Manager]</color> <color=yellow>Exiting game loop...</color>", Instance);
 
-            TransitionManager.onTransitionInComplete -= OnTransitionInComplete;
+            TransitionManager.OnTransitionInComplete -= OnTransitionInComplete;
 
             SceneManager.LoadSceneAsync("MainMenu"); // 1 should be main menu
             Destroy(Instance.gameObject);

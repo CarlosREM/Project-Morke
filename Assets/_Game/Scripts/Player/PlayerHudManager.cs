@@ -20,13 +20,17 @@ public class PlayerHudManager : MonoBehaviour
                      
     [SerializeField] private float speedUpPerMissingHealth = 1.5f;
     [SerializeField] private FMODUnity.StudioEventEmitter sfxHeart;
-    
+
+    [SerializeField] private RectTransform batteryIndicator;
     [SerializeField] private Slider batterySlider;
     [SerializeField] private RectTransform batteryRechargeIcon;
     
-    [SerializeField] private TMPro.TextMeshProUGUI[] objectives;
+    [SerializeField] private TMPro.TextMeshProUGUI objectiveText;
+
+    [SerializeField] private TMPro.TextMeshProUGUI notificationText;
     
     [SerializeField] private PauseMenuController pauseMenu;
+    [SerializeField] private TMPro.TextMeshProUGUI pauseMenuObjective;
     
     [Header("World Canvas Parameters")]
     [SerializeField] private Transform worldCanvas;
@@ -42,6 +46,8 @@ public class PlayerHudManager : MonoBehaviour
     {
         _hudAnimator = GetComponent<Animator>();
         pauseMenu.HudRef = this;
+
+        pauseMenuObjective.text = "";
     }
 
     private void OnEnable()
@@ -53,6 +59,9 @@ public class PlayerHudManager : MonoBehaviour
         playerRef.health.OnHeal += OnPlayerHeal;
         
         _hudAnimator.SetFloat("HP Speed", 1);
+
+        LevelManager.OnNewObjective += OnNewObjective;
+        LevelManager.OnNotificationSent += OnNotification;
         
         Debug.Log("<color=white>[Player HUD Manager]</color> <color=green>Ready</color>", this);
     }
@@ -65,11 +74,26 @@ public class PlayerHudManager : MonoBehaviour
         playerRef.health.OnHurt -= OnPlayerHurt;
         playerRef.health.OnHeal -= OnPlayerHeal;
         
+        LevelManager.OnNewObjective -= OnNewObjective;
+        LevelManager.OnNotificationSent -= OnNotification;
+        
         Debug.Log("<color=white>[Game Input Manager]</color> <color=red>Disabled</color>", this);
     }
 
     private void Update()
     {
+        if (playerRef.FlashlightActive != batteryIndicator.IsActive())
+        {
+            if (playerRef.FlashlightActive)
+                batteryIndicator.SetActive(true);
+            else
+            {
+                batteryIndicator.SetActive(false);
+                return;
+            }
+                
+        }
+        
         float energy = playerRef.Flashlight.CurrentEnergy;
         if (energy > 80)
             batterySlider.value = 3;
@@ -84,7 +108,7 @@ public class PlayerHudManager : MonoBehaviour
             batteryRechargeIcon.gameObject.SetActive(playerRef.Flashlight.IsRecharging);
         
         // tutorial fade out
-        if (_currentTutorialDuration < tutorialDuration + tutorialFadeDuration)
+        if (tutorialHints.IsActive() && _currentTutorialDuration < tutorialDuration + tutorialFadeDuration)
         {
             _currentTutorialDuration += Time.deltaTime;
             if (_currentTutorialDuration > tutorialDuration)
@@ -106,6 +130,11 @@ public class PlayerHudManager : MonoBehaviour
     #endregion
     
     #region UI
+
+    public void ShowTutorialHints()
+    {
+        tutorialHints.SetActive(true);
+    }
     
     private void OnPlayerHurt(int hurtAmount)
     {
@@ -129,11 +158,24 @@ public class PlayerHudManager : MonoBehaviour
 
     public void EnableObjective(int idx)
     {
-        objectives[idx].gameObject.SetActive(true);
+        //objectives[idx].gameObject.SetActive(true);
     }
     public void DisableObjective(int idx)
     {
-        objectives[idx].gameObject.SetActive(false);
+        //objectives[idx].gameObject.SetActive(false);
+    }
+
+    private void OnNewObjective(LevelManager.LevelObjective objective)
+    {
+        objectiveText.text = $"> {objective.objective}";
+        pauseMenuObjective.text = objective.objective;
+        _hudAnimator.SetTrigger("Show Objective");
+    }
+
+    private void OnNotification(string notification)
+    {
+        notificationText.text = notification;
+        _hudAnimator.SetTrigger("Show Notification");
     }
     
     #region Pause Menu

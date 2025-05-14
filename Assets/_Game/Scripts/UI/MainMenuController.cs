@@ -18,24 +18,24 @@ public class MainMenuController : MonoBehaviour
 
     public void OnPlayPressed()
     {
-        TransitionManager.onTransitionInComplete += GoToLevel;
+        TransitionManager.OnTransitionInComplete += GoToLevel;
         TransitionManager.TransitionFadeIn();
 
         void GoToLevel()
         {
-            TransitionManager.onTransitionInComplete -= GoToLevel;
+            TransitionManager.OnTransitionInComplete -= GoToLevel;
             SceneManager.LoadSceneAsync(playScene);
         }
     }
     
     public void OnQuitPressed()
     {
-        TransitionManager.onTransitionInComplete += QuitAfterTransition;
+        TransitionManager.OnTransitionInComplete += QuitAfterTransition;
         TransitionManager.TransitionFadeIn();
 
         void QuitAfterTransition()
         {
-            TransitionManager.onTransitionInComplete -= QuitAfterTransition;
+            TransitionManager.OnTransitionInComplete -= QuitAfterTransition;
         #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
         #else
