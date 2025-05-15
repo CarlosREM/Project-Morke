@@ -55,6 +55,10 @@ public class PlayerHudManager : MonoBehaviour
         if (!playerRef || !playerRef.health)
             return;
         
+        // disable/enable HUD when a cinematic plays/stops, respectively
+        CinematicsManager.OnCinematicPlay += OnCinematicStart;
+        CinematicsManager.OnCinematicStop += OnCinematicStop;
+        
         playerRef.health.OnHurt += OnPlayerHurt;
         playerRef.health.OnHeal += OnPlayerHeal;
         
@@ -70,6 +74,9 @@ public class PlayerHudManager : MonoBehaviour
     {
         if (!playerRef || !playerRef.health)
             return;
+        
+        CinematicsManager.OnCinematicPlay -= OnCinematicStart;
+        CinematicsManager.OnCinematicStop -= OnCinematicStop;
         
         playerRef.health.OnHurt -= OnPlayerHurt;
         playerRef.health.OnHeal -= OnPlayerHeal;
@@ -127,6 +134,16 @@ public class PlayerHudManager : MonoBehaviour
         this.OnEnable();
     }
 
+    private void OnCinematicStart()
+    {
+        gameOverlay.SetActive(false);
+    }
+
+    private void OnCinematicStop()
+    {
+        gameOverlay.SetActive(true);
+    }
+    
     #endregion
     
     #region UI

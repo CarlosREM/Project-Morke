@@ -12,14 +12,17 @@ public class CustomMarkerReceiver : MonoBehaviour, INotificationReceiver
     {
         if (notification is PlayerDialogueMarker playerDialogueNotif)
         {
+            Debug.Log("[CustomMarkerReceiver] Notification received (Player Dialogue)");
             onPlayerDialogueNotification?.Invoke(playerDialogueNotif.dialogueMessage, playerDialogueNotif.dialogueDuration);
         }
         else if (notification is PlayerControlMarker playerControlNotif)
         {
+            Debug.Log("[CustomMarkerReceiver] Notification received (Player Control)");
             onPlayerControlNotification?.Invoke(playerControlNotif.newControlStatus, playerControlNotif.playerActive);
         }
         else
         {
+            Debug.Log("[CustomMarkerReceiver] Notification received (Default)");
             onBaseNotification?.Invoke();
         }
     }

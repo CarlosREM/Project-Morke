@@ -180,10 +180,21 @@ public class LevelManager : MonoBehaviour
         GameLoopManager.Instance.PlayerRef.FlashlightActive = newStatus;
     }
 
-    public void SetPlayerControlStatus(bool newStatus, bool playerActive)
+    public void SetPlayerControlStatus(bool newStatus, bool newActive)
     {
         GameLoopManager.Instance.PlayerRef.enabled = newStatus;
-        GameLoopManager.Instance.PlayerRef.SetActive(playerActive);
+        GameLoopManager.Instance.PlayerRef.SetActive(newActive);
+    }
+
+    
+    public void SetPlayerControlStatus(bool newStatus)
+    {
+        GameLoopManager.Instance.PlayerRef.enabled = newStatus;
+    }
+
+    public void SetPlayerActiveStatus(bool newStatus)
+    {
+        GameLoopManager.Instance.PlayerRef.SetActive(newStatus);
     }
 
     public void ShowTutorial()

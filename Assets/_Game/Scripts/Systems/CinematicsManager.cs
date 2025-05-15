@@ -25,10 +25,10 @@ public class CinematicsManager : MonoBehaviour
     {
         Assert.IsTrue(index.IsInRange(0, cinematicList.Length-1), "Invalid Cinematic index");
         
-        cinematicList[index].cinematicSequence.SetActive(true); // it should play once its active
+        cinematicList[index].cinematicSequence.SetActive(true);
+        cinematicList[index].cinematicSequence.Play();
         
         IsPlayingCinematic = true;
-        cinematicList[index].cinematicSequence.Play();
         OnCinematicPlay?.Invoke();
         StartCoroutine(CinematicCoroutine(cinematicList[index]));
     }

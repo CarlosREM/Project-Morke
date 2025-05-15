@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8318545441097990557}
+  - component: {fileID: 8514085880420409046}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -33,6 +34,36 @@ Transform:
   - {fileID: 7554184487075200356}
   m_Father: {fileID: 4430871618510809352}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8514085880420409046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 72496250289827784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: 70c20ff5053c1014fa32db6167337246, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 72496250289827784}
+          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_MethodName: SetActive
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &671806043823971365
 GameObject:
   m_ObjectHideFlags: 0
@@ -500,7 +531,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: a78cf328f11c7a84391d5b579f2580ec, type: 2}
-  m_InitialState: 1
+  m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
@@ -515,6 +546,8 @@ PlayableDirector:
     value: {fileID: 671806043823971365}
   - key: {fileID: -7396630597719725799, guid: a78cf328f11c7a84391d5b579f2580ec, type: 2}
     value: {fileID: 816880834832374869}
+  - key: {fileID: -8194640807215422094, guid: a78cf328f11c7a84391d5b579f2580ec, type: 2}
+    value: {fileID: 8514085880420409046}
   m_ExposedReferences:
     m_References: []
 --- !u!1 &3860895280644711848

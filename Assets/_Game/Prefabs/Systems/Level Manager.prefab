@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7650349571022253942}
   - component: {fileID: 8961465113429816694}
-  - component: {fileID: 7383527736182550484}
+  - component: {fileID: 4496326570099735742}
   m_Layer: 0
   m_Name: Level Manager
   m_TagString: Level Manager
@@ -59,7 +59,7 @@ MonoBehaviour:
   sfxKnock: {fileID: 0}
   menuScene: 0
   dialogueText: {fileID: 0}
---- !u!114 &7383527736182550484
+--- !u!114 &4496326570099735742
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
