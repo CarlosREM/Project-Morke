@@ -16,4 +16,9 @@ public static class ObjectExtensions
     {
         return value >= min && value <= max;
     }
+
+    public static void UpdateTimer(this ref float timer)
+    {
+        timer -= (timer > 0) ? Time.deltaTime : 0;
+    }
 }

@@ -1,12 +1,15 @@
 using System;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class DamageTrigger : MonoBehaviour
 { 
     [SerializeField, Min(0)] private int damage;
     
     [TagSelector] public string[] DamageTagFilter = new string[] { };
+
+    [SerializeField] private UnityEvent onDamageDealt;
     
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -20,6 +23,7 @@ public class DamageTrigger : MonoBehaviour
         if (DamageTagFilter.Contains(otherHealth.tag) && !otherHealth.IsDead)
         {
             otherHealth.Hurt(damage);
+            onDamageDealt.Invoke();
         }
     }
 }

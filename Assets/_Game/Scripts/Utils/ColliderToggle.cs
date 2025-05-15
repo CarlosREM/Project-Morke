@@ -69,6 +69,25 @@ public class ColliderToggle : MonoBehaviour
         onToggle.Invoke(_toggleStatus);
     }
 
+    private void OnTriggerExit2D(Collider2D col)
+    {
+        if (!_isTrigger)
+            return;
+        
+        if (col.attachedRigidbody == null)
+            return;
+        
+        if (!tagsToCheck.Contains(col.attachedRigidbody.tag))
+            return;
+        
+        if (toggleActivationMode == ToggleActivationMode.OnStay)
+            UpdateToggle(col.attachedRigidbody);
+        
+        Debug.Log($"Trigger toggle activated: {_toggleStatus}");
+        
+        onToggle.Invoke(_toggleStatus);
+    }
+
     private void UpdateToggle(Rigidbody2D otherRb)
     {
         switch (toggleActivationMode)
@@ -77,6 +96,7 @@ public class ColliderToggle : MonoBehaviour
                 return;
             
             case ToggleActivationMode.OnTouch:
+            case ToggleActivationMode.OnStay:
                 _toggleStatus = !_toggleStatus;
                 break;
             

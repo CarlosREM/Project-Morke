@@ -1,5 +1,6 @@
-using UnityEngine;
 using System;
+using UnityEngine;
+using UnityEngine.Events;
 
 public class CharacterHealth : MonoBehaviour
 {
@@ -9,6 +10,10 @@ public class CharacterHealth : MonoBehaviour
    
    [SerializeField] private float invincibleDelayAfterDamage;
    private float _invincibleDelay;
+
+   [SerializeField] private UnityEvent<int> onHurtEvent;
+   [SerializeField] private UnityEvent<int> onHealEvent;
+   [SerializeField] private UnityEvent onDeathEvent;
    
    public Action<int> OnHurt;
    public Action<int> OnHeal;
@@ -50,13 +55,15 @@ public class CharacterHealth : MonoBehaviour
       {
          CurrentHealth = 0;
          OnDeath?.Invoke();
+         onDeathEvent?.Invoke();
       }
       else
       {
-         OnHurt?.Invoke(amount);
          _invincibleDelay = invincibleDelayAfterDamage;
          _invincibleAfterDamage = true;
          IsInvincible = true;
+         OnHurt?.Invoke(amount);
+         onHurtEvent?.Invoke(amount);
       }
    }
 
@@ -69,5 +76,8 @@ public class CharacterHealth : MonoBehaviour
       amount = Mathf.Min(amount, maxHealth - CurrentHealth);
       CurrentHealth += amount;
       OnHeal?.Invoke(amount);
+      onHealEvent?.Invoke(amount);
    }
+
+   public void FullHeal() => Heal(maxHealth);
 }

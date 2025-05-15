@@ -90,4 +90,13 @@ public class PlayerCameraManager : MonoBehaviour
     {
         camComposer.Damping = value;
     }
+
+    public Rect GetCameraBounds()
+    {
+        Rect output = new();
+        output.height = cameraRef.Lens.OrthographicSize * 2;
+        output.width = output.height * cameraRef.Lens.Aspect;
+        output.center = cameraRef.transform.position;
+        return output;
+    }
 }

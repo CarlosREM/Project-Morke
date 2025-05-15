@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using UnityEngine;
 using Rewired;
 using UnityEngine.Assertions;
-using UnityEngine.Serialization;
 using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -115,6 +113,7 @@ public class PlayerControl : MonoBehaviour
 
         // this works, in a way, trust me
         FlashlightActive = FlashlightActive;
+        Flashlight.enabled = true;
 
         rb.bodyType = RigidbodyType2D.Dynamic;
         

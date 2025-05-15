@@ -39,6 +39,7 @@ public class Checkpoint : MonoBehaviour
         }
 
         onSaveParticles.Play();
+        other.attachedRigidbody.GetComponent<CharacterHealth>().FullHeal();
         
         OnCheckpointActivated?.Invoke(this);
     }

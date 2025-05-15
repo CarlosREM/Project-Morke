@@ -23,6 +23,8 @@ public class GameLoopManager : MonoBehaviour
     public PlayerControl PlayerRef { get; private set; }
     public PlayerCameraManager CamRef { get; private set; }
     public PlayerHudManager HudRef { get; private set; }
+
+    public static event Action OnPlayerDeadReset; 
     
     private void Awake()
     {
@@ -64,6 +66,7 @@ public class GameLoopManager : MonoBehaviour
         HudRef.SetWorldCanvasPosition(checkpoint.position); // don't let the hud stay behind or the illusion breaks!
         
         // TODO: reset all enemies
+        OnPlayerDeadReset?.Invoke();
         
         // wait til transition panel fades out to return control
         yield return new WaitUntil( ()=> !HudRef.IsCoverOn);
