@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ba77982a54bc6ef4aa508dff7740c5e5
+guid: 89c9236ddfe29554ca867b793922d42c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4546973874642397854
-    second: tiles rodapie_0
+      213: 5995505770654455399
+    second: Prop_Kitchen_Microwave_2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +46,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 256
+  spritePixelsToUnits: 512
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -72,7 +72,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 1024
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: tiles rodapie_0
+      name: Prop_Microwave_Shelf
       rect:
         serializedVersion: 2
-        x: 0
-        y: 53
-        width: 768
-        height: 139
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 34
+        y: 50
+        width: 2239
+        height: 1421
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e9aaa09e5a81a1f30800000000000000
-      internalID: 4546973874642397854
+      spriteID: 766d9ac9bb0543350800000000000000
+      internalID: 5995505770654455399
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: ab41d3286c1542c44a6df68eff3f2476
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      tiles rodapie_0: 4546973874642397854
+      Prop_Microwave_Shelf: 5995505770654455399
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

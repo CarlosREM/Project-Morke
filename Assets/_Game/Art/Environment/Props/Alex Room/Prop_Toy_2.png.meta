@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ba77982a54bc6ef4aa508dff7740c5e5
+guid: f6548e0af364e6d48b318cfc1d8ce09d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4546973874642397854
-    second: tiles rodapie_0
+      213: 4693215343368877872
+    second: Prop_Toy_2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,8 +49,8 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 0
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
+  alignment: 9
+  spritePivot: {x: 0.5, y: 0.18}
   spritePixelsToUnits: 256
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: tiles rodapie_0
+      name: Prop_Toy_2_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 53
-        width: 768
-        height: 139
+        x: 46
+        y: 60
+        width: 437
+        height: 435
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e9aaa09e5a81a1f30800000000000000
-      internalID: 4546973874642397854
+      spriteID: 0373ae33d76a12140800000000000000
+      internalID: 4693215343368877872
       vertices: []
       indices: 
       edges: []
@@ -126,7 +126,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      tiles rodapie_0: 4546973874642397854
+      Prop_Toy_2_0: 4693215343368877872
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

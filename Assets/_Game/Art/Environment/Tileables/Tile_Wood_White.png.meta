@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Tile_Wood_White_0
+      name: Tile_Wood_White
       rect:
         serializedVersion: 2
         x: 0
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Tile_Wood_White_0: -3743436613940314728
+      Tile_Wood_White: -3743436613940314728
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

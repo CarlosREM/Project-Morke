@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ba77982a54bc6ef4aa508dff7740c5e5
+guid: 4e6a9e9a80231614faad456b08e62de7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4546973874642397854
-    second: tiles rodapie_0
+      213: 5675990103328391079
+    second: puerta principal_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,8 +49,8 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 0
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
+  alignment: 9
+  spritePivot: {x: 0.5, y: 0.035}
   spritePixelsToUnits: 256
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
@@ -72,7 +72,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 1024
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: tiles rodapie_0
+      name: Prop_Living_Door
       rect:
         serializedVersion: 2
-        x: 0
-        y: 53
-        width: 768
-        height: 139
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 9
+        y: 0
+        width: 4082
+        height: 5832
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e9aaa09e5a81a1f30800000000000000
-      internalID: 4546973874642397854
+      spriteID: 7af75812dea25ce40800000000000000
+      internalID: 5675990103328391079
       vertices: []
       indices: 
       edges: []
@@ -125,8 +125,8 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    spriteID: c04191d28ce6cc141b482aebbec704f1
+    internalID: 676363546
     vertices: []
     indices: 
     edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      tiles rodapie_0: 4546973874642397854
+      Prop_Living_Door: 5675990103328391079
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

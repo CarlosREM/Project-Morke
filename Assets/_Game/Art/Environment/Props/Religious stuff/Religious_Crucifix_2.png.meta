@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ba77982a54bc6ef4aa508dff7740c5e5
+guid: 623803e8bb1b95a408797d6b0da34865
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4546973874642397854
-    second: tiles rodapie_0
+      213: 2339485173621837141
+    second: Religious_Crucifix_2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: tiles rodapie_0
+      name: Religious_Crucifix_2_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 53
-        width: 768
-        height: 139
+        y: 57
+        width: 256
+        height: 337
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e9aaa09e5a81a1f30800000000000000
-      internalID: 4546973874642397854
+      spriteID: 55dc50bce55877020800000000000000
+      internalID: 2339485173621837141
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      tiles rodapie_0: 4546973874642397854
+      Religious_Crucifix_2_0: 2339485173621837141
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

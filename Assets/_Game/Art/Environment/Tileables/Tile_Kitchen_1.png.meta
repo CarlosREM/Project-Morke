@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ba77982a54bc6ef4aa508dff7740c5e5
+guid: c1bc9cf1458a32549a0591897af42d8d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4546973874642397854
-    second: tiles rodapie_0
+      213: 5013186334310224218
+    second: Tile_Kitchen_1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: tiles rodapie_0
+      name: Tile_Kitchen_1_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 53
-        width: 768
-        height: 139
+        y: 0
+        width: 512
+        height: 512
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e9aaa09e5a81a1f30800000000000000
-      internalID: 4546973874642397854
+      spriteID: a515769f86a629540800000000000000
+      internalID: 5013186334310224218
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      tiles rodapie_0: 4546973874642397854
+      Tile_Kitchen_1_0: 5013186334310224218
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
