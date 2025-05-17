@@ -49,3 +49,10 @@ MonoBehaviour:
   playerPrefab: {fileID: 4297840739752708178, guid: 1356f90a80c7aa54c9d1bab95e878f63, type: 3}
   cameraPrefab: {fileID: 601144256583794599, guid: d0551d0518fac5146bb014c3e2a00da1, type: 3}
   playerHudPrefab: {fileID: 5952606913574336945, guid: 1c2bfdb840b95c4438625e28fd938317, type: 3}
+  sfxOnDead:
+    Guid:
+      Data1: 588850342
+      Data2: 1313096270
+      Data3: 185647521
+      Data4: 470521041
+    Path: event:/Player/Player Dead

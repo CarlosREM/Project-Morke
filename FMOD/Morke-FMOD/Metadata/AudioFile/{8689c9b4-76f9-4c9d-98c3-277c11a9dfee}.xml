@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{8689c9b4-76f9-4c9d-98c3-277c11a9dfee}">
+		<property name="assetPath">
+			<value>Enemy/Aleteo_1.ogg</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.24371882086167801</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{c8698b92-6083-406c-8281-7e0b5d057af3}</destination>
+		</relationship>
+	</object>
+</objects>

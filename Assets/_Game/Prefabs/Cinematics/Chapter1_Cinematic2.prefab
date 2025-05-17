@@ -135,6 +135,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4430871618510809352}
   - component: {fileID: 7006289091749333022}
+  - component: {fileID: 4106839245142141034}
   m_Layer: 0
   m_Name: Chapter1_Cinematic2
   m_TagString: Untagged
@@ -191,6 +192,36 @@ PlayableDirector:
     m_References:
     - 97886c0c1a455e549bcad42afaa223b7: {fileID: 3684245315804984175}
     - 18777fca3f5f6fc4eb7423b0b808dea5: {fileID: 0}
+--- !u!114 &4106839245142141034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3684245315804984175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: 70c20ff5053c1014fa32db6167337246, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3684245315804984175}
+          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_MethodName: 
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &3699709280618425892
 GameObject:
   m_ObjectHideFlags: 0

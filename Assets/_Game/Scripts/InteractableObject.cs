@@ -11,7 +11,7 @@ public class InteractableObject : MonoBehaviour
     [SerializeField] private UnityEvent onExitRange;
     [SerializeField] private UnityEvent onInteracted;
     [SerializeField] private float delayAfterInteracted = 0.5f;
-    [SerializeField] private bool disableAfterInteracted;
+    [SerializeField] private bool deactivateAfterInteracted;
     private float _delayTimer;
 
     [SerializeField] private Light2D lightMarker;
@@ -55,7 +55,7 @@ public class InteractableObject : MonoBehaviour
         {
             onInteracted?.Invoke();
 
-            if (disableAfterInteracted)
+            if (deactivateAfterInteracted)
                 gameObject.SetActive(false);
             
             else if (delayAfterInteracted > 0)
@@ -69,7 +69,7 @@ public class InteractableObject : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag(this.tag))
+        if (!enabled || !other.CompareTag(this.tag))
             return;
         
         onEnterRange.Invoke();
@@ -77,7 +77,7 @@ public class InteractableObject : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (!other.CompareTag(this.tag))
+        if (!enabled || !other.CompareTag(this.tag))
             return;
         
         onExitRange.Invoke();

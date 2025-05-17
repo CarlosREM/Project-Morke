@@ -4,10 +4,13 @@ using UnityEngine.Assertions;
 
 public class Checkpoint : MonoBehaviour
 {
+    [SerializeField] private float cooldown = 2;
     [SerializeField] private ParticleSystem onSaveParticles;
     [SerializeField] private GameObject[] visualsOn;
+    [SerializeField] private FMODUnity.EventReference sfxReference;
 
     private bool _isOn;
+    private float _currentCooldown;
     
     public static event Action<Checkpoint> OnCheckpointActivated;
     
@@ -24,9 +27,23 @@ public class Checkpoint : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        _currentCooldown.UpdateTimer();
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // don't activate if not player
         if (!other.CompareTag("Player"))
+            return;
+
+        // don't activate if on cooldown
+        if (_currentCooldown > 0)
+            return;
+        
+        // don't activate if respawning
+        if (other.attachedRigidbody.GetComponent<CharacterHealth>().IsDead)
             return;
 
         if (!_isOn)
@@ -40,6 +57,9 @@ public class Checkpoint : MonoBehaviour
 
         onSaveParticles.Play();
         other.attachedRigidbody.GetComponent<CharacterHealth>().FullHeal();
+        _currentCooldown = cooldown;
+        
+        FMODUnity.RuntimeManager.PlayOneShot(sfxReference, transform.position);
         
         OnCheckpointActivated?.Invoke(this);
     }

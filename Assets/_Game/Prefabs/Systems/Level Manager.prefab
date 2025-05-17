@@ -52,12 +52,13 @@ MonoBehaviour:
   startWithCinematic: 0
   levelCheckpoints:
   - {fileID: 2643188692254936698}
+  <StartingCheckpoint>k__BackingField: {fileID: 2643188692254936698}
   levelObjectives: []
   totalBreakers: 2
   livingRoomLight: {fileID: 0}
   livingRoomDoor: {fileID: 0}
   sfxKnock: {fileID: 0}
-  menuScene: 0
+  menuScene: 1
   dialogueText: {fileID: 0}
 --- !u!114 &4496326570099735742
 MonoBehaviour:

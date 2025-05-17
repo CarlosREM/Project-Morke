@@ -594,6 +594,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4292537170215725302}
   - component: {fileID: 7523873296213513302}
+  - component: {fileID: 6518596413207058227}
   m_Layer: 5
   m_Name: Pause Menu
   m_TagString: Untagged
@@ -637,6 +638,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767b4729b05fdc64697f9f3b29ed0104, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6518596413207058227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7302938055591034786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -82873334
+      Data2: 1242558842
+      Data3: -1894362959
+      Data4: 773098343
+    Path: snapshot:/Mute SFX
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 0
+  OverrideMaxDistance: 0
 --- !u!1 &7904022780415436652
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,6 +24,9 @@ public class ColliderToggle : MonoBehaviour
 
     private bool _toggleStatus;
     private bool _isTrigger;
+
+    [SerializeField] private bool singleUse;
+    private bool _used;
     
     private void Awake()
     {
@@ -35,7 +38,7 @@ public class ColliderToggle : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        if (_isTrigger)
+        if (_isTrigger || !this.isActiveAndEnabled)
             return;
         
         if (col.rigidbody == null)
@@ -44,22 +47,34 @@ public class ColliderToggle : MonoBehaviour
         if (!tagsToCheck.Contains(col.rigidbody.tag))
             return;
 
+        if (singleUse && _used)
+            return;
+        
         UpdateToggle(col.rigidbody);
         
         Debug.Log($"Collision toggle activated: {_toggleStatus}");
         
         onToggle.Invoke(_toggleStatus);
+        
+        if (singleUse)
+        {
+            _used = true;
+            gameObject.SetActive(false);
+        }
     }
     
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (!_isTrigger)
+        if (!_isTrigger || !this.isActiveAndEnabled)
             return;
         
         if (col.attachedRigidbody == null)
             return;
         
         if (!tagsToCheck.Contains(col.attachedRigidbody.tag))
+            return;
+        
+        if (singleUse && _used)
             return;
         
         UpdateToggle(col.attachedRigidbody);
@@ -67,17 +82,26 @@ public class ColliderToggle : MonoBehaviour
         Debug.Log($"Trigger toggle activated: {_toggleStatus}");
         
         onToggle.Invoke(_toggleStatus);
+        
+        if (singleUse)
+        {
+            _used = true;
+            gameObject.SetActive(false);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D col)
     {
-        if (!_isTrigger)
+        if (!_isTrigger || !this.isActiveAndEnabled)
             return;
         
         if (col.attachedRigidbody == null)
             return;
         
         if (!tagsToCheck.Contains(col.attachedRigidbody.tag))
+            return;
+
+        if (singleUse && _used)
             return;
         
         if (toggleActivationMode == ToggleActivationMode.OnStay)
@@ -86,6 +110,12 @@ public class ColliderToggle : MonoBehaviour
         Debug.Log($"Trigger toggle activated: {_toggleStatus}");
         
         onToggle.Invoke(_toggleStatus);
+
+        if (singleUse)
+        {
+            _used = true;
+            gameObject.SetActive(false);
+        }
     }
 
     private void UpdateToggle(Rigidbody2D otherRb)

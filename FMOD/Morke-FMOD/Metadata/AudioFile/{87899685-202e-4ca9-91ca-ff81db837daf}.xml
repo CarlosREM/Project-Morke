@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{87899685-202e-4ca9-91ca-ff81db837daf}">
+		<property name="assetPath">
+			<value>Enemy/Monstruo_Muere.ogg</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.2671201814058957</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{c8698b92-6083-406c-8281-7e0b5d057af3}</destination>
+		</relationship>
+	</object>
+</objects>

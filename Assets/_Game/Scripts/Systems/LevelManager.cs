@@ -30,6 +30,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private bool startWithCinematic;
      
     [SerializeField] List<Transform> levelCheckpoints;
+    [field: SerializeField] public Transform StartingCheckpoint { get; private set; }
 
     public static event Action<string> OnNotificationSent;
     
@@ -93,9 +94,7 @@ public class LevelManager : MonoBehaviour
 
     private void OnCheckpointReached(Checkpoint checkpoint)
     {
-        int i = levelCheckpoints.IndexOf(checkpoint.transform);
-        Assert.IsTrue(i >= 0, "Invalid checkpoint, needs to be added to Checkpoint list first"); 
-        GameLoopManager.CheckpointIndex = i;
+        GameLoopManager.CurrentCheckpoint = checkpoint.transform;
         
         OnNotificationSent?.Invoke("<color=yellow>Checkpoint reached</color>");
     }

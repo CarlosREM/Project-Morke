@@ -398,7 +398,7 @@ MonoBehaviour:
   - {fileID: 6831511589444561322}
   activateDelay: 1
   blinkDelayRange: {x: 5, y: 8}
-  moveSpeedOnFlap: 400
+  moveSpeedOnFlap: 500
   sfxOnFlap: {fileID: 6015407659752314462}
   sfxOnDamaged: {fileID: 7262007369574929684}
   sfxOnDead: {fileID: 713961497629856747}
@@ -449,11 +449,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -1389081182
-      Data2: 1141264543
-      Data3: -1296790376
-      Data4: 2009766850
-    Path: event:/Enemy/Enemy Dead
+      Data1: 928195301
+      Data2: 1115573685
+      Data3: -910841703
+      Data4: -721470417
+    Path: event:/Enemy/Static Enemy Dead
   Event: 
   EventPlayTrigger: 0
   EventStopTrigger: 0
@@ -709,7 +709,7 @@ Transform:
   m_GameObject: {fileID: 5087848827346169924}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -730,11 +730,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 1360365644
-      Data2: 1160611625
-      Data3: -2082200153
-      Data4: 1601863378
-    Path: event:/Player/Player Walk
+      Data1: 365108905
+      Data2: 1116020816
+      Data3: 1082099361
+      Data4: -1588750551
+    Path: event:/Enemy/Static Enemy Flap
   Event: 
   EventPlayTrigger: 0
   EventStopTrigger: 0
@@ -744,8 +744,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
+  OverrideMinDistance: 3
+  OverrideMaxDistance: 10
 --- !u!1 &6769333641539884684
 GameObject:
   m_ObjectHideFlags: 0
@@ -5928,11 +5928,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -861267416
-      Data2: 1240195944
-      Data3: -531477086
-      Data4: 1754886439
-    Path: event:/Enemy/Enemy Hurt
+      Data1: 1531949549
+      Data2: 1278616372
+      Data3: -984873842
+      Data4: 1001176074
+    Path: event:/Enemy/Static Enemy Hurt
   Event: 
   EventPlayTrigger: 0
   EventStopTrigger: 0

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{d3a4ac88-dd1a-46e5-89fb-44b496240b69}">
+		<property name="assetPath">
+			<value>Player/GAMEOVER.ogg</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>5.6093650793650793</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{c8698b92-6083-406c-8281-7e0b5d057af3}</destination>
+		</relationship>
+	</object>
+</objects>

@@ -50,41 +50,42 @@ public class PlayerHudManager : MonoBehaviour
         pauseMenuObjective.text = "";
     }
 
-    private void OnEnable()
+    private void Start()
     {
-        if (!playerRef || !playerRef.health)
-            return;
-        
         // disable/enable HUD when a cinematic plays/stops, respectively
         CinematicsManager.OnCinematicPlay += OnCinematicStart;
         CinematicsManager.OnCinematicStop += OnCinematicStop;
         
-        playerRef.health.OnHurt += OnPlayerHurt;
-        playerRef.health.OnHeal += OnPlayerHeal;
-        
-        _hudAnimator.SetFloat("HP Speed", 1);
-
+        // on screen text notifs
         LevelManager.OnNewObjective += OnNewObjective;
         LevelManager.OnNotificationSent += OnNotification;
+
+        if (playerRef && playerRef.health)
+        {
+            playerRef.health.OnHurt += OnPlayerHurt;
+            playerRef.health.OnHeal += OnPlayerHeal;
+        }
+        
+        _hudAnimator.SetFloat("HP Speed", 1);
         
         Debug.Log("<color=white>[Player HUD Manager]</color> <color=green>Ready</color>", this);
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
-        if (!playerRef || !playerRef.health)
-            return;
-        
         CinematicsManager.OnCinematicPlay -= OnCinematicStart;
         CinematicsManager.OnCinematicStop -= OnCinematicStop;
         
-        playerRef.health.OnHurt -= OnPlayerHurt;
-        playerRef.health.OnHeal -= OnPlayerHeal;
-        
         LevelManager.OnNewObjective -= OnNewObjective;
         LevelManager.OnNotificationSent -= OnNotification;
+
+        if (playerRef && playerRef.health)
+        {
+            playerRef.health.OnHurt -= OnPlayerHurt;
+            playerRef.health.OnHeal -= OnPlayerHeal;
+        }
         
-        Debug.Log("<color=white>[Game Input Manager]</color> <color=red>Disabled</color>", this);
+        Debug.Log("<color=white>[Game Input Manager]</color> <color=red>Destroyed</color>", this);
     }
 
     private void Update()
@@ -131,7 +132,6 @@ public class PlayerHudManager : MonoBehaviour
     {
         playerRef = player;
         player.OnPauseTriggered += ShowPauseMenu;
-        this.OnEnable();
     }
 
     private void OnCinematicStart()
@@ -196,6 +196,8 @@ public class PlayerHudManager : MonoBehaviour
     }
     
     #region Pause Menu
+
+    private bool _previousOverlayStatus;
     
     public void ShowPauseMenu()
     {
@@ -203,15 +205,16 @@ public class PlayerHudManager : MonoBehaviour
             return;
         
         playerRef.enabled = false;
-        gameOverlay.gameObject.SetActive(false);
-        pauseMenu.gameObject.SetActive(true);
+        _previousOverlayStatus = gameOverlay.IsActive();
+        gameOverlay.SetActive(false);
+        pauseMenu.SetActive(true);
     }
 
     public void HidePauseMenu()
     {
         playerRef.enabled = true;
-        pauseMenu.gameObject.SetActive(false);
-        gameOverlay.gameObject.SetActive(true);
+        pauseMenu.SetActive(false);
+        gameOverlay.SetActive(_previousOverlayStatus);
     }
 
     #endregion

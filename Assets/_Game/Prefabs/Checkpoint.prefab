@@ -427,6 +427,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaa164810f4356b4491a7fcbf0dd92ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cooldown: 2
   onSaveParticles: {fileID: 6813257766680336695}
   visualsOn:
   - {fileID: 2957319974300591232}
@@ -434,6 +435,13 @@ MonoBehaviour:
   - {fileID: 2671497816528186984}
   - {fileID: 1406526937033233413}
   - {fileID: 9158594307496473724}
+  sfxReference:
+    Guid:
+      Data1: -703299408
+      Data2: 1282737281
+      Data3: -1536283487
+      Data4: -869247603
+    Path: event:/Player/Checkpoint
 --- !u!61 &4607853301574775823
 BoxCollider2D:
   m_ObjectHideFlags: 0

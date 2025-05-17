@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{859c97fa-5d9a-4900-ae30-23307ea90f1b}">
 		<property name="assetPath">
-			<value>sonido enemigo 1.wav</value>
+			<value>Legacy/sonido enemigo 1.wav</value>
 		</property>
 		<property name="isStreaming">
 			<value>true</value>

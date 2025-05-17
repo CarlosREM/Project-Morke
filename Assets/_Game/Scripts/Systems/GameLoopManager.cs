@@ -18,12 +18,15 @@ public class GameLoopManager : MonoBehaviour
     [SerializeField] private PlayerCameraManager cameraPrefab;
     [SerializeField] private PlayerHudManager playerHudPrefab;
 
-    public static int CheckpointIndex { get; set; }
+    public static Transform CurrentCheckpoint { get; set; }
 
     public PlayerControl PlayerRef { get; private set; }
     public PlayerCameraManager CamRef { get; private set; }
     public PlayerHudManager HudRef { get; private set; }
 
+    [Header("SFX")] 
+    [SerializeField] private FMODUnity.EventReference sfxOnDead;
+    
     public static event Action OnPlayerDeadReset; 
     
     private void Awake()
@@ -51,6 +54,8 @@ public class GameLoopManager : MonoBehaviour
         CamRef.FocusPlayer();
         HudRef.PlayerDeathAnim();
         
+        FMODUnity.RuntimeManager.PlayOneShot(sfxOnDead);
+        
         HudRef.SetWorldCanvasPosition(PlayerRef.transform.position);
         
         // dont move player until transition panel is fully active
@@ -61,11 +66,9 @@ public class GameLoopManager : MonoBehaviour
         yield return null;
         
         // reset player position to the last checkpoint
-        var checkpoint = LevelManager.Current.GetLevelCheckpoint(CheckpointIndex);
-        PlayerRef.transform.position = checkpoint.position;
-        HudRef.SetWorldCanvasPosition(checkpoint.position); // don't let the hud stay behind or the illusion breaks!
+        PlayerRef.transform.position = CurrentCheckpoint.position;
+        HudRef.SetWorldCanvasPosition(CurrentCheckpoint.position); // don't let the hud stay behind or the illusion breaks!
         
-        // TODO: reset all enemies
         OnPlayerDeadReset?.Invoke();
         
         // wait til transition panel fades out to return control
@@ -103,13 +106,12 @@ public class GameLoopManager : MonoBehaviour
         // a level manager is REQUIRED in every playable level
         Assert.IsNotNull(LevelManager.Current, "Level Manager instance hasn't been initialized.");
 
-        CheckpointIndex = 0; // TODO: remove this later
-        var checkpoint = LevelManager.Current.GetLevelCheckpoint(CheckpointIndex);
+        CurrentCheckpoint = LevelManager.Current.StartingCheckpoint;
         
-        var player = Instantiate(Instance.playerPrefab, checkpoint.transform.position, Quaternion.identity);
+        var player = Instantiate(Instance.playerPrefab, CurrentCheckpoint.position, Quaternion.identity);
         player.health.OnDeath += Instance.OnPlayerDeath;
         
-        var playerCamera = Instantiate(Instance.cameraPrefab, checkpoint.transform.position, Quaternion.identity);
+        var playerCamera = Instantiate(Instance.cameraPrefab, CurrentCheckpoint.position, Quaternion.identity);
         playerCamera.Initialize(player);
         
         var playerHud = Instantiate(Instance.playerHudPrefab, Vector3.zero, Quaternion.identity);

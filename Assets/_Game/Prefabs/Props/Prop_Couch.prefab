@@ -137,6 +137,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4975554432092186082, guid: ab26818f1ed4b96468d4a53ec90b546a, type: 3}
+      propertyPath: m_UsedByEffector
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4975554432092186082, guid: ab26818f1ed4b96468d4a53ec90b546a, type: 3}
       propertyPath: m_Points.Array.data[0].x
       value: -3.3
       objectReference: {fileID: 0}
@@ -155,6 +159,10 @@ PrefabInstance:
     - target: {fileID: 5887096588761200743, guid: ab26818f1ed4b96468d4a53ec90b546a, type: 3}
       propertyPath: m_Name
       value: Platform
+      objectReference: {fileID: 0}
+    - target: {fileID: 5887096588761200743, guid: ab26818f1ed4b96468d4a53ec90b546a, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

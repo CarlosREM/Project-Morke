@@ -20,6 +20,10 @@ PrefabInstance:
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 616073604996767143, guid: 1f38be18440a0014f94002236d7067ec, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4123603206214183682, guid: 1f38be18440a0014f94002236d7067ec, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.532
@@ -31,6 +35,14 @@ PrefabInstance:
     - target: {fileID: 5825576879606868148, guid: 1f38be18440a0014f94002236d7067ec, type: 3}
       propertyPath: m_Name
       value: Door_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287777804003667685, guid: 1f38be18440a0014f94002236d7067ec, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287777804003667685, guid: 1f38be18440a0014f94002236d7067ec, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6601047374820907102, guid: 1f38be18440a0014f94002236d7067ec, type: 3}
       propertyPath: m_LocalPosition.x

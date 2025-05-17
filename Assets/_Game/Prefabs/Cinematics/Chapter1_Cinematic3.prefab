@@ -495,6 +495,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4430871618510809352}
   - component: {fileID: 7006289091749333022}
+  - component: {fileID: 3692092601999390690}
   m_Layer: 0
   m_Name: Chapter1_Cinematic3
   m_TagString: Untagged
@@ -536,8 +537,6 @@ PlayableDirector:
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
   m_SceneBindings:
-  - key: {fileID: 9056266700403622001, guid: a78cf328f11c7a84391d5b579f2580ec, type: 2}
-    value: {fileID: 6146471491743002440}
   - key: {fileID: 5704514989543024945, guid: a78cf328f11c7a84391d5b579f2580ec, type: 2}
     value: {fileID: 72496250289827784}
   - key: {fileID: -505162155277449334, guid: a78cf328f11c7a84391d5b579f2580ec, type: 2}
@@ -548,8 +547,42 @@ PlayableDirector:
     value: {fileID: 816880834832374869}
   - key: {fileID: -8194640807215422094, guid: a78cf328f11c7a84391d5b579f2580ec, type: 2}
     value: {fileID: 8514085880420409046}
+  - key: {fileID: -5311084182886208741, guid: a78cf328f11c7a84391d5b579f2580ec, type: 2}
+    value: {fileID: 4100360613569387755}
+  - key: {fileID: -570847277373168026, guid: a78cf328f11c7a84391d5b579f2580ec, type: 2}
+    value: {fileID: 6146471491743002440}
   m_ExposedReferences:
     m_References: []
+--- !u!114 &3692092601999390690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3684245315804984175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: 70c20ff5053c1014fa32db6167337246, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3684245315804984175}
+          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_MethodName: 
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &3860895280644711848
 GameObject:
   m_ObjectHideFlags: 0
@@ -835,6 +868,7 @@ GameObject:
   - component: {fileID: 4403269387614694359}
   - component: {fileID: 245134319392819478}
   - component: {fileID: 4368788955755046072}
+  - component: {fileID: 4100360613569387755}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -903,6 +937,28 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &4100360613569387755
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6146471491743002440}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6456167638673120522
 GameObject:
   m_ObjectHideFlags: 0

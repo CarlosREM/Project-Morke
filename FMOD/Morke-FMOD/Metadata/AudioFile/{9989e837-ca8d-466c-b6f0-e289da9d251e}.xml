@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{9989e837-ca8d-466c-b6f0-e289da9d251e}">
 		<property name="assetPath">
-			<value>heartbeat_scaling.wav</value>
+			<value>Legacy/heartbeat_scaling.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>

@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{e44ac1df-e251-4124-969a-7a9237b89936}">
 		<property name="assetPath">
-			<value>sfx knock.wav</value>
+			<value>Legacy/sfx knock.wav</value>
 		</property>
 		<property name="isStreaming">
 			<value>true</value>

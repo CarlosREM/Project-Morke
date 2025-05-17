@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{10b3e475-7db7-4776-858a-c3997f9d53b1}">
 		<property name="assetPath">
-			<value>breaker sfx.wav</value>
+			<value>Legacy/breaker sfx.wav</value>
 		</property>
 		<property name="isStreaming">
 			<value>true</value>
