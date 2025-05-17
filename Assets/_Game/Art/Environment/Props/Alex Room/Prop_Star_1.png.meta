@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 8fd9d0e0e75714e47a17a32d07aeba52
+guid: 35b853c2fba7bab4f8cd160662b8eada
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 439995645751787478
-    second: Candle_6_0
+      213: 4777311593914053685
+    second: Prop_Star_1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,8 +49,8 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 0
-  alignment: 9
-  spritePivot: {x: 0.5, y: 0.0075}
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 256
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Candle_6_0
+      name: Prop_Star_1_0
       rect:
         serializedVersion: 2
-        x: 96
-        y: 2
-        width: 64
-        height: 508
+        x: 24
+        y: 20
+        width: 208
+        height: 215
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6dff0c765bd2b1600800000000000000
-      internalID: 439995645751787478
+      spriteID: 5343a98559b6c4240800000000000000
+      internalID: 4777311593914053685
       vertices: []
       indices: 
       edges: []
@@ -126,7 +126,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Candle_6_0: 439995645751787478
+      Prop_Star_1_0: 4777311593914053685
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

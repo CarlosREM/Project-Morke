@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d98997568c4828f40aa93a7579e39068
+guid: 8a3069cf42dc81746a8e9f1e9e5698d4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7230259950712636350
-    second: tiles escalera, top_0
+      213: 1574645497624387805
+    second: Prop_Star_2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +46,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spriteMeshType: 0
+  alignment: 9
+  spritePivot: {x: 0.3807321, y: 0.5023084}
+  spritePixelsToUnits: 256
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: tiles escalera, top_0
+      name: Prop_Star_2_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 130
-        width: 768
-        height: 58
+        x: 55
+        y: 84
+        width: 94
+        height: 92
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 24c3a04e1e4f8ab90800000000000000
-      internalID: -7230259950712636350
+      spriteID: dd0e11dbcb34ad510800000000000000
+      internalID: 1574645497624387805
       vertices: []
       indices: 
       edges: []
@@ -125,8 +125,8 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
-    internalID: 0
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Prop_Star_2_0: 1574645497624387805
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

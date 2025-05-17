@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: 8fd9d0e0e75714e47a17a32d07aeba52
+guid: 4e7f445ab63de4247b020635da635bb1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 439995645751787478
-    second: Candle_6_0
+      213: -4758323058418277782
+    second: LightMask_Window_4_0
+  - first:
+      213: -8016577249767401750
+    second: LightMask_Window_4_1
+  - first:
+      213: 1437003083554366319
+    second: LightMask_Window_4_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,8 +55,8 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 0
-  alignment: 9
-  spritePivot: {x: 0.5, y: 0.0075}
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 256
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
@@ -100,23 +106,67 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Candle_6_0
+      name: LightMask_Window_4_0
       rect:
         serializedVersion: 2
-        x: 96
-        y: 2
-        width: 64
-        height: 508
+        x: 17
+        y: 10
+        width: 667
+        height: 1510
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6dff0c765bd2b1600800000000000000
-      internalID: 439995645751787478
+      spriteID: a62ad68936a07fdb0800000000000000
+      internalID: -4758323058418277782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LightMask_Window_4_1
+      rect:
+        serializedVersion: 2
+        x: 635
+        y: 10
+        width: 1142
+        height: 1526
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae6d22907756fb090800000000000000
+      internalID: -8016577249767401750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LightMask_Window_4_2
+      rect:
+        serializedVersion: 2
+        x: 1782
+        y: 10
+        width: 759
+        height: 1526
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f632660e0b241f310800000000000000
+      internalID: 1437003083554366319
       vertices: []
       indices: 
       edges: []
@@ -126,7 +176,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -135,7 +185,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Candle_6_0: 439995645751787478
+      LightMask_Window_4_0: -4758323058418277782
+      LightMask_Window_4_1: -8016577249767401750
+      LightMask_Window_4_2: 1437003083554366319
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

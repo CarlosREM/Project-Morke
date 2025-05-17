@@ -341,6 +341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f60ee7d00a924a846b57621a3ea30c91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableOnStart: 0
   onEnterRange:
     m_PersistentCalls:
       m_Calls:
@@ -388,6 +389,7 @@ MonoBehaviour:
         m_CallState: 2
   delayAfterInteracted: 0.5
   disableAfterInteracted: 0
+  lightMarker: {fileID: 5608407832772088447}
 --- !u!1 &8823554682281588862
 GameObject:
   m_ObjectHideFlags: 0

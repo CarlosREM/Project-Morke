@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: 8fd9d0e0e75714e47a17a32d07aeba52
+guid: c08087d5aa495194a85fa25a03f3777e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 439995645751787478
-    second: Candle_6_0
+      213: 4960012053010215702
+    second: Prop_Boxes_3_0
+  - first:
+      213: 1040006505084579868
+    second: Prop_Boxes_3_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,8 +52,8 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 0
-  alignment: 9
-  spritePivot: {x: 0.5, y: 0.0075}
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 256
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
@@ -100,23 +103,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Candle_6_0
+      name: Prop_Boxes_3_0
       rect:
         serializedVersion: 2
-        x: 96
-        y: 2
-        width: 64
-        height: 508
+        x: 1
+        y: 6
+        width: 509
+        height: 236
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6dff0c765bd2b1600800000000000000
-      internalID: 439995645751787478
+      spriteID: 6137455dea085d440800000000000000
+      internalID: 4960012053010215702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Prop_Boxes_3_1
+      rect:
+        serializedVersion: 2
+        x: 506
+        y: 170
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1079abf768de6e00800000000000000
+      internalID: 1040006505084579868
       vertices: []
       indices: 
       edges: []
@@ -126,7 +151,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -135,7 +160,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Candle_6_0: 439995645751787478
+      Prop_Boxes_3_0: 4960012053010215702
+      Prop_Boxes_3_1: 1040006505084579868
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
