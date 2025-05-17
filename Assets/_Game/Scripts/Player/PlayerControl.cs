@@ -107,7 +107,7 @@ public class PlayerControl : MonoBehaviour
         _input.AddInputEventDelegate(InputInteract, UpdateLoopType.Update, InputActionEventType.ButtonJustPressed, "GP_Interact");
         _input.AddInputEventDelegate(InputRecharge, UpdateLoopType.Update, InputActionEventType.Update, "GP_Reload");
         
-        _input.AddInputEventDelegate(InputPause, UpdateLoopType.Update, InputActionEventType.ButtonJustPressed, "GP_Pause");
+        _input.AddInputEventDelegate(InputPause, UpdateLoopType.Update, InputActionEventType.Update, "GP_Pause");
 
         health.OnDeath += OnDeath;
 
@@ -517,9 +517,19 @@ public class PlayerControl : MonoBehaviour
             Flashlight.SetRechargeStatus(false);
     }
 
+    
+    private float _pauseInputBuffer = 0;
     private void InputPause(InputActionEventData obj)
     {
-        OnPauseTriggered?.Invoke();
+        _pauseInputBuffer.UpdateTimer();
+        
+        if (obj.GetButtonDown() && _pauseInputBuffer <= 0)
+        {
+            _pauseInputBuffer = 0.5f;
+            
+            OnPauseTriggered?.Invoke();
+        }
+
     }
     
     #endregion
